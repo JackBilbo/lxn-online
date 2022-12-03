@@ -26,7 +26,7 @@ for(let v in vars) {
     allvars.push(V[v]);
 }
 
-// initWS(vars,keybindstates);
+initWS(vars,keybindstates);
 
 if(webGLavailable) {
     import('./modules/navmap_gl.js').then((e) => {
@@ -83,8 +83,28 @@ function update200() {
 
     document.querySelectorAll(".datafield").forEach((el) => {
         let v = el.getAttribute("data-display");
+        if(el.getAttribute("data-conditionvar") != null && el.getAttribute("data-conditionvar") != '') {
+            let bg = el.getAttribute("data-background");
+            let condbg = el.getAttribute("data-condbgcolor");
+            let opacity = el.getAttribute("data-opacity");
+            let condvar = el.getAttribute("data-conditionvar");
+            let condvalue = el.getAttribute("data-conditionvalue");
+            let newcolor;
 
-        el.querySelector(".label").innerText = V[v].shortlabel();
+            if(parseFloat(V[condvar].display()) <= condvalue) {
+                newcolor = condbg;
+            } else {
+                newcolor = bg;
+            }
+
+            let r = parseInt(newcolor.substr(1,2), 16)
+            let g = parseInt(newcolor.substr(3,2), 16)
+            let b = parseInt(newcolor.substr(5,2), 16)
+
+            el.style.background = "rgba(" + r + "," + g + "," + b + "," + opacity +")";
+        }
+
+        
         el.querySelector(".number").innerText = V[v].display();
         el.querySelector(".unit").innerText = V[v].unit();
     })  

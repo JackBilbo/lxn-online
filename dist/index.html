@@ -9,6 +9,31 @@
 <body>
 
     <main>
+      <div class="datafields upper grid-stack">
+        
+        <!--
+        <div id="d8" class="datafield" data-display="wp_arr_msl">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        -->
+      </div>
+      <div class="datafields lower grid-stack">
+        
+        <!--
+        <div id="d8" class="datafield" data-display="wp_arr_msl">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        -->
+      </div>
+
       <div id="Map"></div>
       <div id="glidericon">
         <div id="tilt">
@@ -20,64 +45,7 @@
         </div>
       </div>
 
-      <div class="databar">
-        <div id="d1" class="datafield" data-display="alt_agl">
-          <span class="label"></span>
-          <span class="value">
-            <span class="number"></span>
-            <span class="unit"></span>
-          </span>
-        </div>
-        <div id="d2" class="datafield" data-display="alt">
-          <span class="label"></span>
-          <span class="value">
-            <span class="number"></span>
-            <span class="unit"></span>
-          </span>
-        </div>
-        <div id="d3" class="datafield" data-display="tasktime">
-          <span class="label"></span>
-          <span class="value">
-            <span class="number"></span>
-            <span class="unit"></span>
-          </span>
-        </div>
-        <div id="d4" class="datafield" data-display="wp_arr_agl">
-          <span class="label"></span>
-          <span class="value">
-            <span class="number"></span>
-            <span class="unit"></span>
-          </span>
-        </div>
-        <div id="d5" class="datafield" data-display="windspeed">
-          <span class="label"></span>
-          <span class="value">
-            <span class="number"></span>
-            <span class="unit"></span>
-          </span>
-        </div>
-        <div id="d6" class="datafield" data-display="stf">
-          <span class="label"></span>
-          <span class="value">
-            <span class="number"></span>
-            <span class="unit"></span>
-          </span>
-        </div>
-        <div id="d7" class="datafield" data-display="task_spd">
-          <span class="label"></span>
-          <span class="value">
-            <span class="number"></span>
-            <span class="unit"></span>
-          </span>
-        </div>
-        <div id="d8" class="datafield" data-display="wp_arr_msl">
-          <span class="label"></span>
-          <span class="value">
-            <span class="number"></span>
-            <span class="unit"></span>
-          </span>
-        </div>
-      </div>
+
 
       <div id="datafieldeditor">
         <h1>Edit Datafield</h1>
@@ -87,23 +55,27 @@
         </div>
 
         <div class="entry">
-          <label for="source">Background Color: </label><input type="color" id="bg">
+          <label for="bgcolor">Text Color: </label><input type="color" id="textcolor">
         </div>
 
         <div class="entry">
-          <label for="source">Background Opacity: </label><input type="range" id="opacity" min="0" max="1" step="0.1">
+          <label for="bgcolor">Background Color: </label><input type="color" id="bgcolor">
         </div>
 
         <div class="entry">
-          <label for="source">Background Color: </label><input type="color" id="bg"><label for="conditionvar" class="smalllabel"> when</label><select id="conditionsource"></select> &lt;= <input type="text" id="conditionvalue">
+          <label for="opacity">Background Opacity: </label><input type="range" id="opacity" min="0" max="1" step="0.1">
         </div>
 
         <div class="entry">
-          <label for="source">Unit: </label><select id="unit"></select>
+          <label for="condbgcolor">Background Color: </label><input type="color" id="condbgcolor"><label for="conditionvar" class="smalllabel"> when</label><select id="conditionvar"></select> &lt;= <input type="text" id="conditionvalue">
+        </div>
+
+        <div class="entry">
+          <label for="forceunit">Unit: </label><select id="forceunit"></select>
         </div>
 
 
-        <button id="savedataflield">SAVE</button>
+        <button id="savedataflield">SAVE</button><button id="canceleditor">CANCEL</button>
       </div>
 
       <div id="modal">
@@ -282,6 +254,13 @@
         <button id="maccready">MC <span data-display="maccready">0.0</span>
           <input type="range" min="0" max="5" step="0.1" id="mcslider">
         </button>
+      </div>
+      <div class="buttons edit">
+        <button id="editmodeswitch">Edit</button>
+        <button id="resetlayout" class="editmodeonly">Reset</button>
+        <button id="newdatafield" class="editmodeonly">Add Datafield</button>
+        <button id="savelayout" class="editmodeonly">Save Layout</button>
+        <div id="trash" class="editmodeonly">Drop Datafields here to delete</div>
       </div>
       <div class="buttons mapbuttons">
         <button id="mapoptions">Map <span class="icon"><svg id="triangle" viewBox="0 0 100 100"><polygon points="50 100, 100 15, 0 15"/></svg></span></button>
