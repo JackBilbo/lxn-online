@@ -1,0 +1,18 @@
+{
+  "rules": {
+    ".read": true, 
+    ".write": true,  // 2022-10-31
+    "check": {
+      	".read": true,
+      	".write": false
+    },
+      "events": {
+      	".read": true,
+      	".write": true
+    },
+    "eventdetails": {
+      	".read": true,
+      	".write": true
+    }
+  }
+}

@@ -1,0 +1,48 @@
+#Map {
+    position: absolute;
+    top: -25%;
+    bottom: -25%;
+    left: 0;
+    width: 100%;
+}
+
+#Map.trackup {
+    top: 0;
+}
+
+#glidericon {
+    width: 0;
+    height: 0;
+    transition: all 0.1s;
+
+    #tilt,#rotate {
+       width: 0;
+       height: 0;
+       transition: all 0.1s;
+    }
+
+    #symbol {
+        width: 100px;
+        transform: translate(-50px,-50px) rotate(45deg);
+        fill: #fff;
+        stroke: #000;
+        stroke-width: 5px;
+        transition: all 0.1s;
+    }
+
+    #ac_hdg, #ac_trk {
+        width: 3px;
+        height: 50vh;
+        position: absolute;
+        left: 0;
+        top: -50vh;
+        background-color: #0E57AB;
+    }
+    
+    #ac_trk {
+        background-color: #ff22dd;
+        transform-origin: bottom;
+        transform: rotate(0deg);
+        transition: all 0.1s;
+    }
+}

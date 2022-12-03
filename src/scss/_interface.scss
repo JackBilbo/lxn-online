@@ -1,0 +1,145 @@
+#alert {
+	display: none;
+	background-color: #cc0000;
+	color: #fff;
+	text-align: center;
+	padding: 1rem;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index:10000;
+	h2 {
+		margin: 0.5rem 1rem;
+	}
+}
+
+#alert p {
+	font-size: 1.2rem;
+}
+
+button {
+	white-space: nowrap;
+	line-height: 50px;
+    min-width: 60px;
+    background: #444;
+    color: #ccc;
+    border: 2px solid #444;
+    margin: 0 0.5rem 0.2rem 0;
+    font-size: 1.2rem;
+	padding: 0 0.5rem;
+	cursor: pointer;
+	&:hover, &:focus { 
+		color: #eee; 
+		svg { fill: #eee !important;}
+	}
+	&.active {
+		border-top: 2px solid #111;
+		border-left: 2px solid #111;
+		border-right: 2px solid #666;
+		border-bottom: 2px solid #666;
+	}
+
+	.icon {
+		display: inline-block;
+		position: relative;
+		height: 1em;
+		width: 1em;
+		top: calc(47px - 1em);
+    	margin-left: 0.5rem;
+		svg { 
+			fill: #ccc;
+			position: relative;
+			height: 100%;
+		}
+	}
+}
+
+#mapoptions {
+	display: none;
+	.icon { transform: rotate(180deg);}
+
+	@media screen and (max-width: 1200px) {
+		display: flex;
+	}
+}
+
+#maccready span {
+	display: inline-block;
+    width: 2em;
+}
+
+#selected_aircraft {
+	position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+	color: #ccc;
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+input[type="range"] {
+	-webkit-appearance: none;
+	margin-right: 15px;
+	height: 7px;
+	background: rgba(255, 255, 255, 0.6);
+	border-radius: 5px;
+	background-image: linear-gradient(#555, #888);
+	background-size: 70% 100%;
+	background-repeat: no-repeat;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 30px;
+	width: 20px;
+	border-radius: 3px;
+	background: #ccc;
+	cursor: ew-resize;
+	box-shadow: 0 0 2px 0 #555;
+	transition: background .3s ease-in-out;
+  }
+  
+  input[type=range]::-webkit-slider-runnable-track  {
+	-webkit-appearance: none;
+	box-shadow: none;
+	border: none;
+	background: transparent;
+	background-image: linear-gradient(#555, #888);
+  }
+
+.panel {
+    padding: 1em;
+	height: 100%;
+	position: relative;
+}
+
+#modal {
+	display: block;
+    z-index: 100;
+    position: absolute;
+    background: #222;
+    padding: 3vw;
+    margin: auto;
+    width: 60%;
+    min-height: 60%;
+	max-height: 80%;
+	overflow: auto;
+    top: 20%;
+    left: 20%;
+	section {
+		line-height: 1.6;
+
+		a {
+			color: #fff;
+		}
+	}
+	button {
+		float:right;
+		min-width: 8rem;
+	}
+	@media screen and (max-width: 40em) {
+		width: 90%;
+    	top: 20%;
+    	left: 5%;
+	}
+}

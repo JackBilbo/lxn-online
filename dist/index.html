@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>LXN</title>
+    <link rel="stylesheet" href="./main.css" />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css' rel='stylesheet' />
+  </head>
+<body>
+
+    <main>
+      <div id="Map"></div>
+      <div id="glidericon">
+        <div id="tilt">
+          <div id="rotate">
+            <div id="ac_hdg"></div>
+            <div id="ac_trk"></div>
+            <svg id="symbol" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M247.989 307.923l.88.88-118.47 118.42c-22.74 22.79-76.09 54.47-76.09 54.47a17.21 17.21 0 0 1-22.18-26.16l181.72-181.71zm231.86-275.77a17.21 17.21 0 0 0-24.33 0l-181.72 181.72 34.1 34.1.88.88 118.42-118.43c22.74-22.74 54.47-76.09 54.47-76.09a17.21 17.21 0 0 0-1.82-22.18zm-52.44 319.24a32.78 32.78 0 0 0-23.25 9.62l-43.17 43.17a32.89 32.89 0 0 0 0 46.51l6 6 89.69-89.68-6-6a32.78 32.78 0 0 0-23.27-9.62zm-46.8 10.55l-18.69 18.69c-40.87-40.64-64.22-62-102.66-84l-39.27-39.32c-64-64-65.14-86.41-57.12-94.44 1.91-1.91 4.76-3.29 9-3.29 12.64 0 37.47 12.43 85.46 60.41l39.29 39.29c21.95 38.47 43.37 61.8 83.99 102.66zm-156.89-162.82c-34.3-29.84-49.85-33.11-53.79-29.17-2.7 2.7-1.91 8.38 2.33 16.9 4.91 9.84 13.88 22.21 26.79 36.94z"/></svg>
+          </div> 
+        </div>
+      </div>
+
+      <div class="databar">
+        <div class="datafield" data-display="alt_agl">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        <div class="datafield" data-display="alt">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        <div class="datafield" data-display="tasktime">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        <div class="datafield" data-display="wp_arr_agl">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        <div class="datafield" data-display="windspeed">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        <div class="datafield" data-display="stf">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        <div class="datafield" data-display="task_spd">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+        <div class="datafield" data-display="wp_arr_msl">
+          <span class="label"></span>
+          <span class="value">
+            <span class="number"></span>
+            <span class="unit"></span>
+          </span>
+        </div>
+      </div>
+
+
+      <div id="modal">
+        <div class="modalcontent">
+          <h1></h1>
+          <section></section>
+        </div>
+        <button id="closemodal"></button>
+      </div>
+
+      <div id="alert">
+				<h2></h2>
+				<p></p>
+			</div>
+
+      <div id="selected_aircraft"></div>
+    </main>
+    <aside>
+      <div id="taskpage" class="panel">
+        <input type="file" id="planupload" accept=".pln">
+
+        <div id="tasklist" class="task_not_started hasScrollbars">
+          <header>
+            <h1>Task Status</h1>
+                          <div class="task-state">
+                              <div class="task-timer"><div class="shine"></div>
+                                  <span class="label">Time</span>
+                                  <div class="value">
+                                      <span class="number">00:00:00</span>
+                                  </div>
+                              </div>
+                              <div class="task-totaldistance"><div class="shine"></div>
+                                  <span class="label">Dist</span>
+                                  <div class="value">
+                                      <span class="number">0</span><span class="unit">km</span>
+                                  </div></div>
+                              <div class="task-distanceleft"><div class="shine"></div>
+                                  <span class="label">To Go</span>
+                                  <div class="value">
+                                      <span class="number">0</span><span class="unit">km</span>
+                                  </div></div>
+                              <div class="task-arrivalheight"><div class="shine"></div>
+                                  <span class="label">Finish Alt</span>
+                                  <div class="value">
+                                      <span class="number"></span><span class="unit">m</span>
+                                  </div>
+                              </div>
+                              <div class="task-average"><div class="shine"></div>
+                                  <span class="label">Avg.</span>
+                                  <div class="value">
+                                      <span class="number"></span><span class="unit">kmh</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </header>
+    
+          <div id="waypoints"></div>            
+
+          <div id="wp-template" class="task-waypoint">
+                          <div class="header">
+                              <div class="wp-name"></div>
+                              <div class="badge wp-ok">OK</div>
+                              <div class="badge wp-nok">FAIL</div>
+                          </div>
+
+                          <div class="wp-values">
+                              <div class="wp-main">
+                                  <div class="wp-data dist"><div class="shine"></div>
+                                      <span class="label">Dist</span>
+                                      <div class="value">
+                                          <span class="number">0</span><span class="unit"></span>
+                                      </div>
+                                  </div>
+                                  <div class="wp-data arr_msl"><div class="shine"></div>
+                                      <span class="label">Arr (MSL)</span>
+                                      <div class="value">
+                                          <span class="number"></span><span class="unit"></span>
+                                      </div>
+                                  </div>
+                                  <div class="wp-data arr_agl"><div class="shine"></div>
+                                      <span class="label">Arr (WP)</span>
+                                      <div class="value">
+                                          <span class="number"></span><span class="unit"></span>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="wp-details">
+                                  <div class="wp-data bearing"><div class="shine"></div>
+                                      <span class="label">Brg</span>
+                                      <div class="value">
+                                          <span class="number"></span><span class="unit">deg</span>
+                                      </div>
+                                  </div>
+                                  <div class="wp-data wind"><div class="shine"></div>
+                                      <span class="label">Wind</span>
+                                      <div class="value">
+                                          <span class="number"></span><span class="unit"></span>
+                                      </div>
+                                  </div>
+                                  <div class="wp-data ete"><div class="shine"></div>
+                                      <span class="label">ETE</span>
+                                      <div class="value">
+                                          <span class="number"></span><span class="unit"></span>
+                                      </div>
+                                  </div>
+                                  
+                              </div>
+
+                          </div>
+
+
+                          <div class="wp-minmax">
+                              <span class="wp-min"></span>
+                              <span class="wp-max"></span>
+                          </div>
+
+                          <div class="click-indicator"><span>▼</span></div>
+                          <a href="#" class="wp-link"></a>
+                      </div>
+
+          
+
+        </div>
+      </div>
+
+      <div id="configpage" class="panel">
+        <h1>CONFIG</h1>
+        <div id="systemconfig">
+          <div class="buttonwrapper">
+            <button class="lxconfigbtn" id="conf_aircraft" aria-controls="conf_panel_aircraft">Aircraft</button>
+            <button class="lxconfigbtn" id="conf_units" aria-controls="conf_panel_units">Units</button>
+            <!--
+            <button class="lxconfigbtn" id="conf_bugs" aria-controls="conf_panel_bugs">Bugs</button>
+            <button class="lxconfigbtn" id="conf_pc" aria-controls="conf_panel_pc">Polar Curve</button>
+            -->	
+          </div>
+          <div class="configpanel" id="conf_panel_aircraft" aria-controlledby="conf_aircraft">
+            <header>Aircraft</header>
+            <div class="configpanel_content">
+                <select id="acselector">
+                  <option>Select aircraft</option>
+                </select>
+            </div>
+            <div class="configpanel_buttons">
+              <a href="#" class="configpanel_close">CLOSE</a>
+            </div>
+          </div>
+
+          <div class="configpanel" id="conf_panel_units" aria-controlledby="conf_units">
+            <header>Units</header>
+            <div class="configpanel_content">
+              <div class="quickselect">
+                <button class="lxsettingsbtn" id="conf_units_imperial">Imperial</button>
+                <button class="lxsettingsbtn" id="conf_units_metric">Metric</button>
+              </div>
+              <div id="unitdetailsetting">
+
+              </div>
+            </div>
+            <div class="configpanel_buttons">
+              <a href="#" class="configpanel_close">CLOSE</a>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </aside>
+
+    <nav role="navigation">
+      <div class="buttons panels">
+        <button id="taskpageswitch">Task</button>
+        <button id="configpageswitch">Config</button>
+        <button id="wp_next">WP+</button>
+        <button id="prev_wp">WP-</button>
+        <button id="maccready">MC <span data-display="maccready">0.0</span>
+          <input type="range" min="0" max="5" step="0.1" id="mcslider">
+        </button>
+      </div>
+      <div class="buttons mapbuttons">
+        <button id="mapoptions">Map <span class="icon"><svg id="triangle" viewBox="0 0 100 100"><polygon points="50 100, 100 15, 0 15"/></svg></span></button>
+        <button id="mapcenter">Map Center Plane</button>
+        <button id="maprotation">Set Map Northup</button>
+        <button id="mapsat">Map: Satellite</button>
+        <button id="mapoutdoors">Map: Outdoors</button>
+        
+      </div>
+    </nav>
+    <script>
+      const V = {};
+      const D = {};
+      var NAVMAP, WS, B21_SOARING_ENGINE;
+    </script>
+<script src="./firebase_bundle.js"></script>
+<script src="./main_bundle.js"></script>
+</body>
+</html>

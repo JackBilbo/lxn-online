@@ -1,0 +1,128 @@
+:root {
+    --basefont: 16px;
+}
+
+* { box-sizing: border-box;}
+
+body {
+    background-color: #222;
+    color: #fff;
+    font-size: var(--basefont);
+    padding: 0;
+    margin: 0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+}
+
+main {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100% - 75px);
+    width: 100%;
+    overflow:hidden;
+    transition: width 0.25s;
+    &.showpanels {
+        width: 0;
+        @media screen and (min-width: 600px) {
+            width: 50%;
+        }
+        @media screen and (min-width: 900px) {
+            width: 70%;
+        }
+    }
+}
+
+aside {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: -100%;
+    transition: left 0.25s;
+    &.showpanels {
+        left: 0;
+        @media screen and (min-width: 600px) {
+            width: 50%;
+        }
+        @media screen and (min-width: 900px) {
+            width: 30%;
+        }
+    }
+}
+
+nav {
+    width: 100%;
+    height: 75px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2rem 0.5rem 0 0.5rem;
+    .buttons {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .mapbuttons {
+        align-items: flex-end;
+        @media screen and (max-width: 1200px) {
+            height: 57px;
+            overflow: hidden;
+            position: absolute;
+            right: 0.5rem;
+            bottom: 0.5rem;
+            flex-direction: column-reverse;
+            background-color: #222;
+            padding: 0.2rem 0.5rem 0 0.5rem;
+            button { width: 100%; margin-right: 0;}
+            &:hover, &:focus {
+                height: auto;
+            }
+        }
+    }
+
+}
+
+.databar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.datafield {
+    width: 25%;
+    outline: 1px solid grey;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0,0,0,0.5);
+    font-size: 1.5rem;
+
+    .label {
+        width: 100%;
+        font-size: 0.7em;
+        text-align: center;
+    }
+    .value {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        padding: 0.5em;
+        align-items: baseline;
+        justify-content: center;
+    }
+    .number {
+        font-size: 2em;
+        
+    }
+
+    .unit {
+        font-size: 0.7em;
+        vertical-align: baseline;
+    }
+}
+

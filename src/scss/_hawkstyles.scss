@@ -1,0 +1,120 @@
+
+#hawk {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 1px;
+	height: 1px;
+	overflow: visible;
+	border: 5px solid red;
+	font-size: 45px;
+    z-index: -1;
+}
+
+#hawk.active { display: block; }
+
+.map_trackup #hawk {
+	top: calc(50% + 210px);
+}
+
+#hawk .arrow {
+	position: absolute;
+	height: 3rem;
+	top: -1.5rem;
+	width: 1rem;
+	left: -1rem;
+	transform-origin: center;
+}
+
+#arrow_current {
+	background-color: #6162a9;
+}
+
+#arrow_avg {
+	background-color: #aaaaaa;
+}
+
+.arrow svg {
+	width: 200%;
+	position: absolute;
+	bottom: -1.6rem;
+	left: -50%;
+}
+
+#arrow_current svg {
+	fill: #6162a9;
+}
+
+#arrow_avg svg {
+	fill: #aaaaaa;
+}
+
+#hawk #number {
+	position: absolute;
+	bottom: -300px;
+	padding: var(--verticalpadding) var(--horizontalpadding);
+	width: 18rem;
+	margin-left: -9rem;
+	text-align:center;
+	color: #fff;
+	background-color: rgba(0,0,0,0.6);
+}
+
+.map_trackup #hawk #number { bottom: -180px; }
+
+#hawk #vertical_indicator {
+	position: absolute;
+	width: calc(var(--devicewidth) / 8);
+	height: 0;
+	border: 1px solid black;
+	right: calc( -1* var(--devicewidth) / 2.3);
+	text-align: center;
+}
+
+.map_trackup #hawk #vertical_indicator { top: -210px; }
+
+#hawkbar {
+	position: absolute;
+	right: 0;
+	bottom:0;
+	width: 100%;
+	height: 0;
+	background-color: #0d8b3c;
+}
+
+#hawkbar svg {
+	transform: rotate(180deg);
+	position: absolute;
+	left: 0;
+	top: -90px;
+	width: 100%;
+	fill: #0d8b3c;
+}
+
+#hawkbar.negative {
+	background-color: #cc0000;
+	bottom: auto;
+	top: 0;
+}
+
+#hawkbar.negative svg {
+	transform: rotate(0deg);
+	top: auto;
+	bottom: -90px;
+	fill: #cc0000;
+}
+
+#hawkbar .value {
+	color: #fff;
+	position: absolute;
+	bottom: 0.2rem;
+	left: 0;
+	width: 100%;
+	text-align: center;
+}
+
+#hawkbar.negative .value {
+	bottom: auto;
+	top: 0.2rem;
+}
