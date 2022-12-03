@@ -1,14 +1,27 @@
 
-.databar {
+.datafields {
+    position: absolute;
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    position: relative;
+    height: 50%;
+    border: 1px solid yellow;
+    &.upper {
+        top: 0;
+    }
+    &.lower {
+        bottom: 75px;
+    }
 }
 
+.grid-stack-item {
+    z-index: 10;
+    .grid-stack-item-content { overflow-y: hidden !important;}
+}
+
+
 .datafield {
-    width: 25%;
+    user-select: none;
+    width: 100%;
+    height: 100%;
     outline: 1px solid grey;
     display: flex;
     flex-direction: column;
@@ -29,13 +42,30 @@
         justify-content: center;
     }
     .number {
-        font-size: 2em;
+        font-size: 50px;
+        line-height: 50px;
     }
 
     .unit {
         font-size: 0.7em;
         vertical-align: baseline;
     }
+
+    &.minimode {
+        flex-direction: row;
+        justify-content: space-evenly;
+        span {
+            font-size: 30px;
+            line-height: 30px;
+            width: auto;
+            padding: 0.5rem;
+        }
+        .value { padding: 0;}
+    }
+}
+
+.editmode .grid-stack-item {
+    outline: 2px solid lightblue;
 }
 
 #datafieldeditor {
@@ -48,6 +78,7 @@
     overflow: auto;
     background: #222;
     padding: 2rem;
+    z-index: 100;
     @media screen and (max-width: 60rem) {
         top: 5%;
         left: 5%;
@@ -100,3 +131,31 @@
     input[type='range'] { margin: 1.5em 0;}
 }
 
+.buttons.edit .editmodeonly {
+    display: none;
+}
+
+#trash {
+    border: 2px solid #666;
+    line-height: 50px;
+    padding: 0 1em;
+    height: 54px;
+    color: #ccc;
+    font-size: 1.2em;
+}
+
+
+.editmode {
+    .buttons {
+        display: none;
+        &.edit {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+
+            .editmodeonly {
+                display: block;
+            }
+        }
+    }
+}
