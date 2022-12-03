@@ -14,11 +14,14 @@ export class Taskhandler {
     init() {
         let parent = this;
 
-        document.getElementById('taskpageswitch').addEventListener("click", () => {
+        document.getElementById('taskpageswitch').addEventListener("click", (e) => {
             if(this.ui.activepanel == "taskpage") {
                 this.ui.closePanels();
+                e.target.classList.remove("active");
             } else {
                 this.ui.openPanel('taskpage');
+                document.querySelectorAll(".panels button").forEach((el) => { el.classList.remove("active") });
+                e.target.classList.add("active");
             }
         })
 

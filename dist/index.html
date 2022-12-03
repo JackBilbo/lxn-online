@@ -79,6 +79,32 @@
         </div>
       </div>
 
+      <div id="datafieldeditor">
+        <h1>Edit Datafield</h1>
+
+        <div class="entry">
+          <label for="source">Display: </label><select id="source"></select>
+        </div>
+
+        <div class="entry">
+          <label for="source">Background Color: </label><input type="color" id="bg">
+        </div>
+
+        <div class="entry">
+          <label for="source">Background Opacity: </label><input type="range" id="opacity" min="0" max="1" step="0.1">
+        </div>
+
+        <div class="entry">
+          <label for="source">Background Color: </label><input type="color" id="bg"><label for="conditionvar" class="smalllabel"> when</label><select id="conditionsource"></select> &lt;= <input type="text" id="conditionvalue">
+        </div>
+
+        <div class="entry">
+          <label for="source">Unit: </label><select id="unit"></select>
+        </div>
+
+
+        <button id="savedataflield">SAVE</button>
+      </div>
 
       <div id="modal">
         <div class="modalcontent">

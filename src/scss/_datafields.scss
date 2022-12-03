@@ -1,0 +1,102 @@
+
+.databar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.datafield {
+    width: 25%;
+    outline: 1px solid grey;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0,0,0,0.5);
+    font-size: 1.5rem;
+
+    .label {
+        width: 100%;
+        font-size: 0.7em;
+        text-align: center;
+    }
+    .value {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        padding: 0.5em;
+        align-items: baseline;
+        justify-content: center;
+    }
+    .number {
+        font-size: 2em;
+    }
+
+    .unit {
+        font-size: 0.7em;
+        vertical-align: baseline;
+    }
+}
+
+#datafieldeditor {
+    display: none;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    overflow: auto;
+    background: #222;
+    padding: 2rem;
+    @media screen and (max-width: 60rem) {
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        padding: 1rem;
+    }
+
+    font-size: 1.2em;
+
+    .entry {
+        display: flex;
+        align-items: baseline;
+        margin-bottom: 1em;
+        border-bottom: 1px solid #666;
+        padding-bottom: 0.5em;
+        @media screen and (max-width: 60rem) {
+            flex-direction: column;
+            
+        }
+    }
+
+    label {
+        width: 12rem;
+        &.smalllabel {
+            width: auto;
+            margin: 0 1em 0 0;
+        }
+    }
+
+    select { 
+        font-size: 1em;  
+        display: block;
+        background: #444;
+        padding: 0.5em;
+        color: #fff;
+    }
+
+    input[type='color'], input[type='range'] {
+        width: 12rem;
+        height: 3em;
+        margin-right: 1em;
+    }
+
+    input[type='text'] {
+        height: 3em;
+        width: 5em;
+    }
+
+    input[type='range'] { margin: 1.5em 0;}
+}
+

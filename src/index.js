@@ -7,6 +7,7 @@ import { Taskhandler } from './modules/taskpage.js';
 import { Interface } from './modules/interface.js';
 import { Configpanel } from './modules/configpage.js';
 import { msg } from './modules/modalmessages.js';
+import './modules/datafields.js';
 
 var allvars = []
 var current_aircraft = {}
@@ -25,7 +26,7 @@ for(let v in vars) {
     allvars.push(V[v]);
 }
 
-initWS(vars,keybindstates);
+// initWS(vars,keybindstates);
 
 if(webGLavailable) {
     import('./modules/navmap_gl.js').then((e) => {
@@ -40,7 +41,7 @@ const hawk = new Hawk( 'rotate' );
 const taskpage = new Taskhandler(ui);
 const configpage = new Configpanel(ui,aircraft);
 
-ui.showModal(null,msg.loading);
+// ui.showModal(null,msg.loading);
 
 const heartbeat100 = window.setInterval(update100, 100);
 const heartbeat200 = window.setInterval(update200, 200);

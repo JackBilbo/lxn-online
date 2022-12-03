@@ -28,7 +28,7 @@ const vars = {
     task_arr_agl: { value: 0, label: "TSK FIN (AGL)", longlabel: "Task Finish Altitude (AGL)", category: "alt", baseunit: "m" },
     task_arr_msl: { value: 0, label: "TSK FIN (MSL)", longlabel: "Task Finish Altitude (MSL)", category: "alt", baseunit: "m" },
     task_spd: { value: 0, label: "TSK SPD", longlabel: "Task Speed", category: "speed", baseunit: "kmh"},
-    current_polar_sink: { value: 0, label: "POLAR SINK", longlabel: "Current Polar Sinks", category: "verticalspeed", baseunit: "ms"},
+    current_polar_sink: { value: 0, label: "POLAR SINK", longlabel: "Current Polar Sink", category: "verticalspeed", baseunit: "ms"},
     total_energy: { value: 0, label: "TE", longlabel: "Totel Energy", category: "verticalspeed", baseunit: "ms" },
     current_netto: { value: 0, label: "NETTO", longlabel: "Current Netto", category: "verticalspeed", baseunit: "ms" },
     smoothed_netto: { value: 0, label: "NETTO", longlabel: "Smoothed Netto", category: "verticalspeed", baseunit: "ms" },

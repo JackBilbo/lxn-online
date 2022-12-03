@@ -80,7 +80,7 @@ button {
 input[type="range"] {
 	-webkit-appearance: none;
 	margin-right: 15px;
-	height: 7px;
+	height: 7px !important;
 	background: rgba(255, 255, 255, 0.6);
 	border-radius: 5px;
 	background-image: linear-gradient(#555, #888);
@@ -114,7 +114,7 @@ input[type="range"] {
 }
 
 #modal {
-	display: block;
+	display: none;
     z-index: 100;
     position: absolute;
     background: #222;

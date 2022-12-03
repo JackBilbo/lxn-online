@@ -16,11 +16,14 @@ export class Configpanel  {
             config.setUnitprefs(unitprefs);
         }
 
-        document.getElementById('configpageswitch').addEventListener("click", () => {
+        document.getElementById('configpageswitch').addEventListener("click", (e) => {
             if(this.ui.activepanel == "configpage") {
                 this.ui.closePanels();
+                e.target.classList.remove("active");
             } else {
                 this.ui.openPanel('configpage');
+                document.querySelectorAll(".panels button").forEach((el) => { el.classList.remove("active") });
+                e.target.classList.add("active");
             }
         })
 
