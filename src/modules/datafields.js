@@ -23,6 +23,7 @@ document.getElementById('source').addEventListener("change", (e) => {
 
 const openDatafieldeditor = function(datafield) {
     const editor = document.getElementById("datafieldeditor");
+    editor.setAttribute("data-editing",datafield.getAttribute("id"));
     let currentdata = datafield.getAttribute('data-display');
 
     // populate the form
@@ -62,8 +63,9 @@ const buildUnitSelect = function(variable) {
 
 const saveDataField = function() {
     const editor = document.getElementById("datafieldeditor");
+    let edited_id = editor.getAttribute("data-editing");
 
-    console.log("stuff happening here");
+    document.getElementById(edited_id).setAttribute("data-display",document.getElementById("source").value);
 
     editor.style.display = 'none';
 }
