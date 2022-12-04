@@ -23,12 +23,15 @@ if(localStorage.getItem("gridlayout")) {
     let savedlayout = JSON.parse(localStorage.getItem("gridlayout"))
     try {
         grid.load(savedlayout); 
+        D.log("Layout loaded from storage.")
     } catch(e) {
         console.error(e);
         grid.load(datafields);
+        D.log("Loading layout failed. Using default. Please 'reset' your layout");
     } 
 } else {
     grid.load(datafields);
+    D.log("Default layout loaded.")
 }
 
 grid.on('resizestop', function(event, el) {

@@ -694,11 +694,19 @@ nav {
   background-color: #ccc;
   color: #000; }
 
+#debugwindow {
+  border: 2px solid #ccc;
+  background: #000;
+  color: #fff;
+  width: 100%;
+  padding: 0.5em;
+  height: 15rem;
+  overflow: auto; }
+
 .datafields {
   position: absolute;
   width: 100%;
-  height: 50%;
-  border: 1px solid yellow; }
+  height: 50%; }
   .datafields.upper {
     top: 0; }
   .datafields.lower {
@@ -737,7 +745,9 @@ nav {
     vertical-align: baseline; }
   .datafield.minimode {
     flex-direction: row;
-    justify-content: space-evenly; }
+    justify-content: center; }
+    .datafield.minimode .label:after {
+      content: ':'; }
     .datafield.minimode span {
       font-size: 30px;
       line-height: 30px;

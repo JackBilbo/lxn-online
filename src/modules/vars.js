@@ -17,7 +17,7 @@ const vars = {
     totalweight: { value: 0, label: "T. Weight", longlabel: "Total Weight", category: "weight", baseunit: "kg" },
     localtime: { value: 0, label: "Local", longlabel: "Local Time", category: "time_of_day", baseunit: "hms24" },
     tasktime: { value: 0, label: "Task", longlabel: "Task Time", category: "time_of_day", baseunit: "hms24" },
-    wp_name: { value: "", label: "WP NAME", longlabel: "Waypoint Name", category: "plaintext", baseunit: "none" },
+    wp_name: { value: "", label: "WP", longlabel: "Waypoint Name", category: "plaintext", baseunit: "none" },
     wp_alt: { value: 0, label: "WP ALT", longlabel: "Waypoint Altitude", category: "alt", baseunit: "m" },
     wp_bearing: { value: 0, label: "WP BRG", longlabel: "Waypoint Bearing", category: "direction", baseunit: "deg" },
     wp_dist: { value: 0, label: "WP DIST", longlabel: "Waypoint Distance", category: "dist", baseunit: "km" },
@@ -212,7 +212,12 @@ class VAR {
     }
 
     set(val, unit = this.baseunit) {
-        this.value = val / factors[this.category][unit];
+        if(this.category == 'plaintext') {
+            this.value = val;
+        } else {
+            this.value = val / factors[this.category][unit];
+        }
+        
     }
 
     getrawvalue() {
@@ -224,7 +229,7 @@ class VAR {
         if(this.category == 'plaintext') {
             return this.value;
         }
-        
+
         if(factors[this.category][unit] == 1) {
             returnvalue = this.value;
         } else {
