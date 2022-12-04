@@ -23,6 +23,14 @@ class navmap {
             'type': 'FeatureCollection',
             'features': []
         };
+
+        this.liftmarkertimer = 0;
+        this.liftmarkerdelay = 3;
+        this.liftmarkercount = 50;
+        this.liftmarkerJson = {
+            "type": "FeatureCollection",
+            "features": []
+        }
     }
 
     init() {
@@ -66,6 +74,11 @@ class navmap {
         } else {
             document.getElementById("mapcenter").classList.remove("active");
         }
+
+        if(V.sim_time_s - this.liftmarkertimer > this.liftmarkerdelay && V.ias.getrawvalue() > 40) {
+            this.liftmarkertimer = V.sim_time_s;
+            this.updateLiftMarkers();
+        }
     }
 
     zoom_in() {
@@ -86,6 +99,31 @@ class navmap {
             NAVMAP.mapRotation = "trackup";
             document.getElementById("maprotation").innerText = "Trackup";
         }
+    }
+
+    updateLiftMarkers() {
+        let radius = Math.abs(V.smoothed_netto.display('kts')) * 2;
+        let color = V.smoothed_netto.display('kts') >= 0 ? "#14852c" : "#cc0000";
+
+        let newdot = {
+            'type': 'Feature',
+            'geometry': {
+            'type': 'Point',
+            'coordinates': [ V.lng.getrawvalue(), V.lat.getrawvalue() ]
+            },
+            "properties":{ 'radius': radius, 'color': color, 'opacity': 1 }
+        }
+
+        this.liftmarkerJson.features.unshift(newdot);
+
+        for(let i = 0; i < this.liftmarkerJson.features.length; i++) {
+            this.liftmarkerJson.features[i].properties.opacity = (this.liftmarkercount-i)/this.liftmarkercount;
+            if(i > this.liftmarkercount) {
+                this.liftmarkerJson.features.pop();
+            }
+        }
+
+        this.map.getSource('lift').setData(this.liftmarkerJson);
     }
 
     updateTaskline() {
@@ -313,7 +351,12 @@ class navmap {
                 'type': 'FeatureCollection',
                 'features': []
             }
-        })
+        });
+
+        NAVMAP.map.addSource('lift', {
+            'type': 'geojson',
+            'data': NAVMAP.liftmarkerJson
+        });
 
         NAVMAP.map.addSource('mapbox-dem', {
             'type': 'raster-dem',
@@ -322,8 +365,23 @@ class navmap {
             'maxzoom': 14
         });
 
-        NAVMAP.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1 });
+        
 
+        if(NAVMAP.map.getStyle().name == "Mapbox Outdoors") {
+            NAVMAP.map.addLayer(
+                {
+                'id': 'hillshading',
+                'source': 'mapbox-dem',
+                'type': 'hillshade'
+                },
+                // Insert below land-structure-polygon layer,
+                // where hillshading sits in the Mapbox Streets style.
+                'land-structure-polygon'
+                );
+        } else {
+            NAVMAP.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1 });
+        }
+        
         NAVMAP.map.addLayer({
             'id': 'tasklayer',
             'type': 'line',
@@ -356,6 +414,17 @@ class navmap {
                 'line-width': ['get','weight']
             },
             'filter': ['==', '$type', 'Polygon']
+        })
+
+        NAVMAP.map.addLayer({
+            'id': 'liftmarkers',
+            'type': 'circle',
+            'source': 'lift',
+            'paint': {
+                'circle-radius': ['get','radius'],
+                'circle-color': ['get','color'],
+                'circle-opacity': ['get','opacity']
+            }
         })
     }
 

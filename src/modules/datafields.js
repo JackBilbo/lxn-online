@@ -178,7 +178,7 @@ const saveDataField = function() {
 
     newconfig.display = document.getElementById("source").value;
 
-    editedDatafield.querySelector(".label").innerText = vars[document.getElementById("source").value].label;
+    editedDatafield.querySelector(".label").innerHTML = vars[document.getElementById("source").value].label;
 
     newconfig.textcolor = document.getElementById("textcolor").value;
     editedDatafield.style.color = document.getElementById("textcolor").value;

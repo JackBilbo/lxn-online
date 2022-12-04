@@ -32,6 +32,7 @@ const vars = {
     total_energy: { value: 0, label: "TE", longlabel: "Totel Energy", category: "verticalspeed", baseunit: "ms" },
     current_netto: { value: 0, label: "NETTO", longlabel: "Current Netto", category: "verticalspeed", baseunit: "ms" },
     smoothed_netto: { value: 0, label: "NETTO", longlabel: "Smoothed Netto", category: "verticalspeed", baseunit: "ms" },
+    oat: { value: 0, label: "OAT", longlabel: "Outside Air Temperature",category:"temperature", baseunit: "C"},
 }
 
 const units = {
@@ -63,6 +64,10 @@ units.verticalspeed.format = (val) => {
 
 units.speed.format = (val) => {
     return val.toFixed(0);
+}
+
+units.temperature.format = (val) => {
+    return val.toFixed(1);
 }
 
 units.alt.format = (val) => {
@@ -146,8 +151,8 @@ const factors = {
         fsuipc: 1 / 0.453592
     },
     temperature: {
-        F: 1,
-        C: 0.55555555,
+        C: 1,
+        F: 0.55555555,
         fsuipc: 1
     },
     time: {
@@ -228,6 +233,10 @@ class VAR {
         let returnvalue;
         if(this.category == 'plaintext') {
             return this.value;
+        }
+
+        if(this.category == 'temperature' && unit == 'F') {
+            return ((this.value * 9/5) +32).toFixed(1);
         }
 
         if(factors[this.category][unit] == 1) {

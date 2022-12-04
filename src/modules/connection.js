@@ -40,7 +40,8 @@ const initWS = (vars, keybindstates) => {
             {name: 'localtime_hrs', address: 0x0238, type: 'int', size: 1 },
             {name: 'localtime_min', address: 0x0239, type: 'int', size: 1 },
             {name: 'localtime_sec', address: 0x023A, type: 'int', size: 1 },
-            {name: 'totalweight', address: 0x30C0, type: 'float', size: 8 }
+            {name: 'totalweight', address: 0x30C0, type: 'float', size: 8 },
+            {name: 'oat', address: 0x28D0 , type: 'float', size: 8 }
         ]
     }
 
@@ -106,6 +107,7 @@ const initWS = (vars, keybindstates) => {
                 if(v == "atc_model") { V.atc_model = response.data.atc_model; } else 
                 if(v == "alt_agl") { V.alt_agl.set(V.alt.getrawvalue() - response.data.alt_agl) } else 
                 if(v == "verticalwind") { V.verticalwind.set(response.data.verticalwind,'fs') } else 
+                if(v == "oat") { V.oat.set((response.data.oat -32) * 5/9 ,'C') } else
                 {
                     try {
                         V[v].set(response.data[v],"fsuipc")
@@ -126,7 +128,11 @@ const initWS = (vars, keybindstates) => {
 
         if(response.name == "LVars" && response.command == "vars.read") {
             if(response.data) {
-                if(response.data['BEZEL_CAL']) { console.log(response.data['BEZEL_CAL']); V.maccready.set( ( response.data['BEZEL_CAL'] > 1 ? response.data['BEZEL_CAL'] * 0.05 : 0 ) ,'ms') }
+                if(response.data['BEZEL_CAL']) { 
+                    V.maccready.set( ( response.data['BEZEL_CAL'] > 1 ? response.data['BEZEL_CAL'] * 0.05 : 0 ) ,'ms'); 
+                    document.getElementById("maccready").querySelector("span").innerText = V.maccready.display();
+                    document.getElementById("maccready").querySelector("input").value = V.maccready.display();
+                }
             }
         }
     }
