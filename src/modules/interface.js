@@ -33,6 +33,9 @@ export class Interface {
             ui.closeModal()
         })
 
+        document.getElementById("mapmenu").addEventListener("click", (e) => { document.querySelector(".buttons.mapbuttons").classList.toggle("active"); })
+        document.getElementById("pagemenu").addEventListener("click", (e) => { document.querySelector(".buttons.panels").classList.toggle("active"); })
+
     }
     update() {
 

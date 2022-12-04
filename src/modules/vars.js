@@ -221,6 +221,10 @@ class VAR {
 
     display(unit = units[this.category].pref) {
         let returnvalue;
+        if(this.category == 'plaintext') {
+            return this.value;
+        }
+        
         if(factors[this.category][unit] == 1) {
             returnvalue = this.value;
         } else {

@@ -64,9 +64,15 @@ button {
 	}
 }
 
-#maccready span {
+#maccready {
+	width: calc(100% - 2em);
+    position: absolute;
+    bottom: 5em;
+	input { width: 75%;}	
+	span {
 	display: inline-block;
     width: 2em;
+	}
 }
 
 #selected_aircraft {
@@ -142,4 +148,70 @@ input[type="range"] {
     	top: 20%;
     	left: 5%;
 	}
+}
+
+nav {
+    width: 100%;
+    height: 75px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2rem 0.5rem 0 0.5rem;
+
+
+    .buttons {
+		display: none;
+		position: absolute;
+		bottom: 75px;
+		flex-direction: column-reverse;
+		background-color: #222;
+		padding: 0.5em 0 0 0.5em;
+
+		&.active {
+			display: flex;
+		}
+
+		@media screen and (min-width: 48em) {
+			display: flex;
+			position: static;
+        	flex-direction: row;
+			padding: 0;
+		}
+        
+    }
+
+    .mapbuttons {       
+        right: 0.5em;
+		@media screen and (min-width: 48em) {
+			align-items: flex-end;
+		}
+	}
+
+	.edit {
+		display: flex;
+		padding: 0;
+		position: static;
+		width: 100%;
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	#pagemenu, #mapmenu {
+		position: absolute;
+		top: 10px;
+		background-color: #222;
+		border: none; 
+		svg {
+			fill: #bbb;
+		} 
+
+		@media screen and (min-width: 48em) { display: none; }
+	}
+
+	#mapmenu { right: 0.5rem; }
+	#pagemenu { left: 0.5rem; }
 }
