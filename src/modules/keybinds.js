@@ -1,5 +1,5 @@
 const handleKeybinds = (keybindOffsets,keybindstates) => {
-    
+    D.log('Keybinding-Data received. Transponder Code is ' + keybindOffsets.transponder.toString(16) )
     if(keybindOffsets.transponder != null) {
         const tc = keybindOffsets.transponder.toString(16);
         if(keybindstates.last_tc == null) { keybindstates.last_tc = tc}

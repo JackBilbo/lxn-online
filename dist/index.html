@@ -196,6 +196,7 @@
           <div class="buttonwrapper">
             <button class="lxconfigbtn" id="conf_aircraft" aria-controls="conf_panel_aircraft">Aircraft</button>
             <button class="lxconfigbtn" id="conf_units" aria-controls="conf_panel_units">Units</button>
+            <button class="lxconfigbtn" id="conf_debug" aria-controls="conf_panel_debug">Debug</button>
             <!--
             <button class="lxconfigbtn" id="conf_bugs" aria-controls="conf_panel_bugs">Bugs</button>
             <button class="lxconfigbtn" id="conf_pc" aria-controls="conf_panel_pc">Polar Curve</button>
@@ -223,6 +224,23 @@
               <div id="unitdetailsetting">
 
               </div>
+            </div>
+            <div class="configpanel_buttons">
+              <a href="#" class="configpanel_close">CLOSE</a>
+            </div>
+          </div>
+
+          <div class="configpanel" id="conf_panel_debug" aria-controlledby="conf_debug" style="overflow:auto">
+            <header>Debug</header>
+            <div class="configpanel_content">
+              <p>Debug information, that might help you to set up connection to MSFS.</p>
+              <p>If all's well. this should show a "connection estblished" message with the server address in use and an additional "keybind"-message whenever the transponder code in MSFS changes.</p>
+              
+              <div id="debugwindow">
+                
+              </div>
+              <button id="resetdebug">Clear Debug Window</button>
+
             </div>
             <div class="configpanel_buttons">
               <a href="#" class="configpanel_close">CLOSE</a>
@@ -286,8 +304,8 @@
       </button>
     </nav>
     <script>
-      const V = {};
-      const D = {};
+      var V = {};
+      var D = {log: function(msg) {document.getElementById("debugwindow").innerHTML += msg + "<br>";}};
       var NAVMAP, WS, B21_SOARING_ENGINE;
     </script>
 <script src="./firebase_bundle.js"></script>

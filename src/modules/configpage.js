@@ -61,6 +61,8 @@ export class Configpanel  {
         document.getElementById("conf_units_metric").addEventListener("click", function(e) {
             config.setUnitprefs("metric");
         })
+
+        document.getElementById("resetdebug").addEventListener("click", function(e) { document.getElementById("debugwindow").innerHTML = ""; })
     }
 
     setUnitprefs(unitpref) {

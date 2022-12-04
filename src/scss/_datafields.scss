@@ -3,7 +3,6 @@
     position: absolute;
     width: 100%;
     height: 50%;
-    border: 1px solid yellow;
     &.upper {
         top: 0;
     }
@@ -53,7 +52,8 @@
 
     &.minimode {
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: center;
+        .label:after { content: ':';}
         span {
             font-size: 30px;
             line-height: 30px;

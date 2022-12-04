@@ -7,13 +7,16 @@ const initWS = (vars, keybindstates) => {
 
     try {
         WS = new WebSocket('ws://' + wsserver + '/fsuipc/', "fsuipc");
+        D.log("Connection established: 'ws://" + wsserver + "/fsuipc/'");
     } catch(e) {
+        D.log("Connection failed:");
+        D.log(e);
         console.error(e);
     }
     
 
     WS.addEventListener("close", function() {
-        console.log("---------------REOPEN---------------")
+        D.log("Connection interrupted. Reconnecting...")
         initWS(vars, keybindstates);
     })
 

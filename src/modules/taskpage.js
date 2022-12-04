@@ -47,7 +47,7 @@ export class Taskhandler {
         if(B21_SOARING_ENGINE.task_finished()) {
             taskheader.querySelector("h1").innerText = "Task finished";
             taskheader.querySelector(".task-state .task-timer .number").innerHTML =  V.display(B21_SOARING_ENGINE.task.finish_time_s - B21_SOARING_ENGINE.task.start_time_s,'s','time_of_day');
-            taskheader.querySelector(".task-state .task-average .number").innerHTML = B21_SOARING_ENGINE.finish_speed_ms();           
+            taskheader.querySelector(".task-state .task-average .number").innerHTML = V.display(B21_SOARING_ENGINE.finish_speed_ms(),'ms','speed');           
         } else if (B21_SOARING_ENGINE.task_started()) {
             taskheader.querySelector("h1").innerText = "Task started";
             taskheader.querySelector(".task-state .task-timer .number").innerHTML = V.display(B21_SOARING_ENGINE.task_time_s(),'s','time_of_day');
