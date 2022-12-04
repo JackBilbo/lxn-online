@@ -4,10 +4,10 @@ import { GridStack } from 'gridstack';
 var editedDatafield;
 var editmode = false;
 var datafields = [
-    { w:3, h:2, content: '<div class="datafield" data-display="windspeed" data-textcolor="#ffffff" data-background="#000000" data-opacity="0.5" data-color="#ffffff"><span class="label">Wind</span><span class="value"><span class="number"></span><span class="unit"></span></span></div>' },
-    { w:3, h:2, content: '<div class="datafield" data-display="ias" data-textcolor="#ffffff" data-background="#000000" data-opacity="0.5" data-color="#ffffff"><span class="label">IAS</span><span class="value"><span class="number"></span><span class="unit"></span></span></div>'},
-    { w:3, h:2, content: '<div class="datafield" data-display="alt" data-textcolor="#ffffff" data-background="#000000" data-opacity="0.5" data-color="#ffffff"><span class="label">ALT</span><span class="value"><span class="number"></span><span class="unit"></span></span></div>'},
-    { w:3, h:2, content: '<div class="datafield" data-display="wp_arr_agl" data-textcolor="#ffffff" data-background="#000000" data-opacity="0.5" data-color="#ffffff"><span class="label">WP ARR (AGL)</span><span class="value"><span class="number"></span><span class="unit"></span></span></div>'}
+    { w:3, h:2, content: '<div class="datafield" data-config=\'{\"display\": \"windspeed\", \"textcolor\": \"#ffffff\", \"background\":\"#000000\", \"opacity\":\"0.5\"}\'><span class="label">Wind</span><span class="value"><span class="number"></span><span class="unit"></span></span></div>' },
+    { w:3, h:2, content: '<div class="datafield" data-config=\'{\"display\": \"ias\", \"textcolor\": \"#ffffff\", \"background\":\"#000000\", \"opacity\":\"0.5\"}\'><span class="label">IAS</span><span class="value"><span class="number"></span><span class="unit"></span></span></div>'},
+    { w:3, h:2, content: '<div class="datafield" data-config=\'{\"display\": \"alt\", \"textcolor\": \"#ffffff\", \"background\":\"#000000\", \"opacity\":\"0.5\"}\'><span class="label">ALT</span><span class="value"><span class="number"></span><span class="unit"></span></span></div>'},
+    { w:3, h:2, content: '<div class="datafield" data-config=\'{\"display\": \"wp_arr_agl\", \"textcolor\": \"#ffffff\", \"background\":\"#000000\", \"opacity\":\"0.5\"}\'><span class="label">WP ARR (AGL)</span><span class="value"><span class="number"></span><span class="unit"></span></span></div>'}
 
 ]
 
@@ -65,6 +65,7 @@ document.getElementById('editmodeswitch').addEventListener("click", (e) => {
         document.body.classList.remove("editmode");
         e.target.classList.remove("active");
         grid.setStatic(true);
+        saveLayout();
     }
 })
 
@@ -74,10 +75,6 @@ document.getElementById('resetlayout').addEventListener("click", (e) => {
 
 document.getElementById('newdatafield').addEventListener("click", (e) => {
     addDatafield();
-})
-
-document.getElementById('savelayout').addEventListener("click", (e) => {
-    saveLayout();
 })
 
 
@@ -111,11 +108,10 @@ const resetLayout = function() {
 const saveLayout = function() {
     let datastring = grid.save();
     localStorage.setItem("gridlayout", JSON.stringify(datastring));
-    alert("Layout saved");
 }
 
 const addDatafield = function() {
-    let newDatafield = grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><div class="datafield" data-display="alt" data-textcolor="#ffffff" data-background="#000000" data-opacity="0.5" data-color="#ffffff"><span class="label"></span><span class="value"><span class="number"></span><span class="unit"></span></span></div></div></div>', {x: 4, y: 10, w: 4, h:2});
+    let newDatafield = grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><div class="datafield" data-config=\'{\"display\": \"alt\", \"textcolor\": \"#ffffff\", \"background\":\"#000000\", \"opacity\":\"0.5\"}\'><span class="label">ALT</span><span class="value"><span class="number"></span><span class="unit"></span></span></div></div></div>', {x: 4, y: 10, w: 4, h:2});
     let el = newDatafield.querySelector(".datafield");
     el.addEventListener("click", (e) => {
         if(editmode) {
@@ -125,13 +121,10 @@ const addDatafield = function() {
 }
 
 
-
-
-
 const openDatafieldeditor = function(datafield) {
     const editor = document.getElementById("datafieldeditor");
     editedDatafield = datafield;
-    let currentdata = datafield.getAttribute('data-display');
+    let currentconfig = JSON.parse(datafield.getAttribute('data-config'));
 
     // populate the form
     document.getElementById("source").innerHTML = "";
@@ -141,7 +134,7 @@ const openDatafieldeditor = function(datafield) {
         let opt = document.createElement('option');
         opt.value = v;
         opt.innerText = vars[v].longlabel;
-        if(currentdata == v) {
+        if(currentconfig.display == v) {
             opt.setAttribute("selected","selected");
         }
 
@@ -152,16 +145,15 @@ const openDatafieldeditor = function(datafield) {
     }
 
     editor.style.display = "block";
-    document.getElementById("textcolor").value = datafield.getAttribute('data-textcolor');
-    document.getElementById("bgcolor").value = datafield.getAttribute('data-background');
-    document.getElementById("opacity").value = parseFloat(datafield.getAttribute('data-opacity'));
-    document.getElementById("condbgcolor").value = datafield.getAttribute('data-condbgcolor');
-    document.getElementById("conditionvar").value = datafield.getAttribute('data-conditionvar');
-    document.getElementById("forceunit").value = datafield.getAttribute('data-forceunit');
+    document.getElementById("textcolor").value = currentconfig.textcolor;
+    document.getElementById("bgcolor").value = currentconfig.background;
+    document.getElementById("opacity").value = parseFloat(currentconfig.opacity);
+    document.getElementById("condbgcolor").value = currentconfig.condbgcolor;
+    document.getElementById("conditionvar").value = currentconfig.conditionvar;
+    document.getElementById("forceunit").value = currentconfig.forceunit;
 
 
-    buildUnitSelect(currentdata);
-
+    buildUnitSelect(currentconfig.display);
     
 }
 
@@ -179,11 +171,13 @@ const buildUnitSelect = function(variable) {
 
 const saveDataField = function() {
     const editor = document.getElementById("datafieldeditor");
-    editedDatafield.setAttribute("data-display",document.getElementById("source").value);
+    let newconfig = {}
+
+    newconfig.display = document.getElementById("source").value;
 
     editedDatafield.querySelector(".label").innerText = vars[document.getElementById("source").value].label;
 
-    editedDatafield.setAttribute('data-textcolor', document.getElementById("textcolor").value);
+    newconfig.textcolor = document.getElementById("textcolor").value;
     editedDatafield.style.color = document.getElementById("textcolor").value;
 
     let backgroundcolor = document.getElementById("bgcolor").value;
@@ -193,15 +187,16 @@ const saveDataField = function() {
     let g = parseInt(backgroundcolor.substr(3,2), 16)
     let b = parseInt(backgroundcolor.substr(5,2), 16)
 
-    editedDatafield.setAttribute("data-background", document.getElementById("bgcolor").value);
+    newconfig.background = document.getElementById("bgcolor").value;
     editedDatafield.style.background = "rgba(" + r + "," + g + "," + b + "," + backgroundOpacity +")";
 
-    editedDatafield.setAttribute('data-condbgcolor', document.getElementById("condbgcolor").value);
-    editedDatafield.setAttribute('data-opacity', backgroundOpacity);
-    editedDatafield.setAttribute('data-conditionvar', document.getElementById("conditionvar").value);
-    editedDatafield.setAttribute('data-conditionvalue', document.getElementById("conditionvalue").value);
-    editedDatafield.setAttribute('data-forceunit', document.getElementById("forceunit").value);
+    newconfig.condbgcolor = document.getElementById("condbgcolor").value;
+    newconfig.opacity =  backgroundOpacity;
+    newconfig.conditionvar = document.getElementById("conditionvar").value;
+    newconfig.conditionvalue = document.getElementById("conditionvalue").value;
+    newconfig.forceunit = document.getElementById("forceunit").value;
 
+    editedDatafield.setAttribute("data-config", JSON.stringify(newconfig));
 
 
     editor.style.display = 'none';

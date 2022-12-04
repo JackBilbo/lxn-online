@@ -82,31 +82,26 @@ function update200() {
     V.smoothed_netto.set( (V.smoothed_netto.getrawvalue() * 0.9) + (V.current_netto.getrawvalue() * 0.1)  )
 
     document.querySelectorAll(".datafield").forEach((el) => {
-        let v = el.getAttribute("data-display");
-        if(el.getAttribute("data-conditionvar") != null && el.getAttribute("data-conditionvar") != '') {
-            let bg = el.getAttribute("data-background");
-            let condbg = el.getAttribute("data-condbgcolor");
-            let opacity = el.getAttribute("data-opacity");
-            let condvar = el.getAttribute("data-conditionvar");
-            let condvalue = el.getAttribute("data-conditionvalue");
+        let conf = JSON.parse(el.getAttribute("data-config"));
+        if(conf.conditionvar != null && conf.conditionvar != '') {
             let newcolor;
 
-            if(parseFloat(V[condvar].display()) <= condvalue) {
-                newcolor = condbg;
+            if(parseFloat(V[conf.conditionvar].display()) <= conf.conditionvalue) {
+                newcolor = conf.condbgcolor;
             } else {
-                newcolor = bg;
+                newcolor = conf.background;
             }
 
             let r = parseInt(newcolor.substr(1,2), 16)
             let g = parseInt(newcolor.substr(3,2), 16)
             let b = parseInt(newcolor.substr(5,2), 16)
 
-            el.style.background = "rgba(" + r + "," + g + "," + b + "," + opacity +")";
+            el.style.background = "rgba(" + r + "," + g + "," + b + "," + conf.opacity +")";
         }
 
         
-        el.querySelector(".number").innerText = V[v].display();
-        el.querySelector(".unit").innerText = V[v].unit();
+        el.querySelector(".number").innerText = V[conf.display].display();
+        el.querySelector(".unit").innerText = V[conf.display].unit();
     })  
     
     taskpage.update();

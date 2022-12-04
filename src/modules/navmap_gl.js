@@ -81,10 +81,10 @@ class navmap {
     toggleMapRotation() {
         if(NAVMAP.mapRotation == "trackup") {
             NAVMAP.mapRotation = "northup";
-            document.getElementById("maprotation").innerText = "Set Map Trackup";
+            document.getElementById("maprotation").innerText = "Northup";
         } else {
             NAVMAP.mapRotation = "trackup";
-            document.getElementById("maprotation").innerText = "Set Map Northup";
+            document.getElementById("maprotation").innerText = "Trackup";
         }
     }
 
