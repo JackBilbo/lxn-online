@@ -5,7 +5,12 @@ if(wsserver == '') { wsserver = '127.0.0.1:2048' }
 
 const initWS = (vars, keybindstates) => {
 
-    WS = new WebSocket('ws://' + wsserver + '/fsuipc/', "fsuipc");
+    try {
+        WS = new WebSocket('ws://' + wsserver + '/fsuipc/', "fsuipc");
+    } catch(e) {
+        console.error(e);
+    }
+    
 
     WS.addEventListener("close", function() {
         console.log("---------------REOPEN---------------")
@@ -111,7 +116,9 @@ const initWS = (vars, keybindstates) => {
         }
 
         if(response.name == "keybindoffsets" && response.command == "offsets.read") {
-            handleKeybinds(response.data,keybindstates);
+            if(response.data) {
+                handleKeybinds(response.data,keybindstates);
+            }
         }
 
         if(response.name == "LVars" && response.command == "vars.read") {

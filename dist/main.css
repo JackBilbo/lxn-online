@@ -33,12 +33,13 @@ main {
     @media screen and (min-width: 48em) {
       main.showpanels {
         width: 50%; } }
-    @media screen and (min-width: 48em) {
+    @media screen and (min-width: 70em) {
       main.showpanels {
         width: 70%; } }
 
 aside {
   position: absolute;
+  background: #222;
   width: 100%;
   height: 100%;
   left: -100%;
