@@ -345,17 +345,17 @@ class navmap {
     }
 
     map_addLayers() {
+        NAVMAP.map.addSource('lift', {
+            'type': 'geojson',
+            'data': NAVMAP.liftmarkerJson
+        });
+
         NAVMAP.map.addSource('task', {
             'type': 'geojson',
             'data': {
                 'type': 'FeatureCollection',
                 'features': []
             }
-        });
-
-        NAVMAP.map.addSource('lift', {
-            'type': 'geojson',
-            'data': NAVMAP.liftmarkerJson
         });
 
         NAVMAP.map.addSource('mapbox-dem', {
@@ -382,6 +382,17 @@ class navmap {
             NAVMAP.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1 });
         }
         
+        NAVMAP.map.addLayer({
+            'id': 'liftmarkers',
+            'type': 'circle',
+            'source': 'lift',
+            'paint': {
+                'circle-radius': ['get','radius'],
+                'circle-color': ['get','color'],
+                'circle-opacity': ['get','opacity']
+            }
+        })
+
         NAVMAP.map.addLayer({
             'id': 'tasklayer',
             'type': 'line',
@@ -416,16 +427,7 @@ class navmap {
             'filter': ['==', '$type', 'Polygon']
         })
 
-        NAVMAP.map.addLayer({
-            'id': 'liftmarkers',
-            'type': 'circle',
-            'source': 'lift',
-            'paint': {
-                'circle-radius': ['get','radius'],
-                'circle-color': ['get','color'],
-                'circle-opacity': ['get','opacity']
-            }
-        })
+        
     }
 
 }

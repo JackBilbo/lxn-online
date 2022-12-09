@@ -7,7 +7,7 @@ const initWS = (vars, keybindstates) => {
 
     try {
         WS = new WebSocket('ws://' + wsserver + '/fsuipc/', "fsuipc");
-        D.log("Connection established: 'ws://" + wsserver + "/fsuipc/'");
+        D.log("Connecting: 'ws://" + wsserver + "/fsuipc/'");
     } catch(e) {
         D.log("Connection failed:");
         D.log(e);
@@ -83,6 +83,7 @@ const initWS = (vars, keybindstates) => {
     }
 
     WS.onopen = function() {
+        D.log("Connected to: 'ws://" + wsserver + "/fsuipc/'");
         WS.send(JSON.stringify(declare_vars));
         WS.send(JSON.stringify(declare_keybinds));
         WS.send(JSON.stringify(request_vars));

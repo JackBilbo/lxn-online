@@ -58,7 +58,7 @@ export class Taskhandler {
 
         taskheader.querySelector(".task-state .task-totaldistance .number").innerHTML = V.display(B21_SOARING_ENGINE.task.distance_m(),'m','dist');
         taskheader.querySelector(".task-state .task-totaldistance .unit").innerHTML = V.units['dist']['pref'];
-	    taskheader.querySelector(".task-state .task-distanceleft .number").innerHTML = (B21_SOARING_ENGINE.task.remaining_distance_m() / 1000).toFixed(0);
+	    taskheader.querySelector(".task-state .task-distanceleft .number").innerHTML = V.display(B21_SOARING_ENGINE.task.remaining_distance_m(),'m','dist');
         taskheader.querySelector(".task-state .task-distanceleft .unit").innerHTML = V.units['dist']['pref'];        
         taskheader.querySelector(".task-state .task-arrivalheight .number").innerHTML = V.display(B21_SOARING_ENGINE.task.finish_wp().arrival_height_msl_m - (B21_SOARING_ENGINE.task.finish_wp().min_alt_m != null? B21_SOARING_ENGINE.task.finish_wp().min_alt_m : B21_SOARING_ENGINE.task.finish_wp().alt_m),'m','alt'); 
         taskheader.querySelector(".task-state .task-arrivalheight .unit").innerHTML = V.units['alt']['pref'];

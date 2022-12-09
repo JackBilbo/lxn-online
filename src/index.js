@@ -41,15 +41,17 @@ const hawk = new Hawk( 'rotate' );
 const taskpage = new Taskhandler(ui);
 const configpage = new Configpanel(ui,aircraft);
 
-// ui.showModal(null,msg.loading);
+ui.showModal(null,msg.loading);
 
 const heartbeat100 = window.setInterval(update100, 100);
 const heartbeat200 = window.setInterval(update200, 200);
 
 function update100() {
-    NAVMAP.update();
-    hawk.update();
     update_sim_time();
+    if(typeof(NAVMAP.update) == 'function') {
+        NAVMAP.update();
+    }
+    hawk.update();
 }
 
 function update200() {
