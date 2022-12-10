@@ -4,6 +4,7 @@ const vars = {
     trk: { value: 0, label: "TRK", longlabel: "GPS Groundtrack", category: "direction", baseunit: "deg"},
     magvar: { value: 0, label: "MAGVAR", longlabel: "Magnetic Variation", category: "direction", baseunit: "deg"},
     alt: { value: 0, label: "ALT", longlabel: "Altitude", category: "alt", baseunit: "m"},
+    gnd_alt: { value: 0, label: "GND ALT", longlabel: "Ground Elevation", category: "alt", baseunit: "m"},
     alt_agl: { value: 0, label: "ALT AGL", longlabel: "Altitude above Ground", category: "alt", baseunit: "m"},
     lat: { value: 53.51470278, label: "LAT", longlabel: "Plane Latitude", category: "plaintext", baseunit: ""},
     lng: { value: 10.14423889, label: "LNG", longlabel: "Plane Longitude", category: "plaintext", baseunit: ""}, 

@@ -6,6 +6,7 @@ import { Hawk } from './modules/hawk.js';
 import { Taskhandler } from './modules/taskpage.js';
 import { Interface } from './modules/interface.js';
 import { Configpanel } from './modules/configpage.js';
+import { Navpage } from './modules/navpanel.js';
 import { msg } from './modules/modalmessages.js';
 import './modules/datafields.js';
 
@@ -13,7 +14,7 @@ var allvars = []
 var current_aircraft = {}
 V.sim_time_s = 0;
 V.sim_time_delta = 0;
-V.isPaused = 1;
+V.isPaused = 0;
 V.localtime_h = 0;
 V.localtime_m = 0;
 V.localtime_s = 0;
@@ -40,6 +41,7 @@ const ui = new Interface();
 const hawk = new Hawk( 'rotate' );
 const taskpage = new Taskhandler(ui);
 const configpage = new Configpanel(ui,aircraft);
+const navpage = new Navpage(ui);
 
 ui.showModal(null,msg.loading);
 
@@ -107,6 +109,7 @@ function update200() {
     })  
     
     taskpage.update();
+    navpage.update();
 }
 
 function update_sim_time() {

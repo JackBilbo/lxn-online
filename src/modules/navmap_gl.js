@@ -54,6 +54,10 @@ class navmap {
 
         this.glider.setLngLat([ V.lng.getrawvalue(), V.lat.getrawvalue() ]);
 
+        if(B21_SOARING_ENGINE.current_wp() != null) {
+            this.updateCourseline();
+        }
+        
         if(this.taskgeojson.features.length > 0) {
             this.updateTaskline();
         }
@@ -124,6 +128,21 @@ class navmap {
         }
 
         this.map.getSource('lift').setData(this.liftmarkerJson);
+    }
+
+    updateCourseline() {
+        var waypointline = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [ V.lng.getrawvalue(), V.lat.getrawvalue() ],
+                    [B21_SOARING_ENGINE.current_wp()["position"].long,B21_SOARING_ENGINE.current_wp()["position"].lat]
+                ]
+            }
+        };
+
+        this.map.getSource('courseline').setData(waypointline);
     }
 
     updateTaskline() {
@@ -342,12 +361,29 @@ class navmap {
             element: document.getElementById("glidericon")
             }).setLngLat([lng, lat])
             .addTo(NAVMAP.map);
+
+        this.map.on("click", (e) => {
+            let coordinates = e.lngLat;
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML('<p>clicked on ' + coordinates.lng + '</p>')
+                .addTo(NAVMAP.map);
+        })    
     }
 
     map_addLayers() {
         NAVMAP.map.addSource('lift', {
             'type': 'geojson',
             'data': NAVMAP.liftmarkerJson
+        });
+
+        NAVMAP.map.addSource('courseline', {
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': []
+            }
         });
 
         NAVMAP.map.addSource('task', {
@@ -390,6 +426,16 @@ class navmap {
                 'circle-radius': ['get','radius'],
                 'circle-color': ['get','color'],
                 'circle-opacity': ['get','opacity']
+            }
+        })
+
+        NAVMAP.map.addLayer({
+            'id': 'courselinelayer',
+            'type': 'line',
+            'source': 'courseline',
+            'paint': {
+                'line-color': NAVMAP.TASK_LINE_CURRENT_COLOR,
+                'line-width': NAVMAP.TASK_LINE_WIDTH
             }
         })
 

@@ -168,7 +168,7 @@ export class b21_soaring_engine_class {
         }    
 
         V.wp_name.set(B21_SOARING_ENGINE.current_wp().name);
-        V.wp_dist.set(B21_SOARING_ENGINE.current_wp().distance_m);
+        V.wp_dist.set(B21_SOARING_ENGINE.current_wp().distance_m / 1000);
         V.wp_bearing.set(B21_SOARING_ENGINE.current_wp().bearing_deg);
         V.wp_arr_msl.set(B21_SOARING_ENGINE.current_wp().arrival_height_msl_m);
         V.wp_ete.set(B21_SOARING_ENGINE.current_wp().ete_s / 60);
@@ -1405,7 +1405,7 @@ export class Task {
                 console.log("GET_FLIGHTPLAN returned:", flightPlanData);
                 this.start_index_is_set = false; // Has this.start_index and this.finish_index been set ?
                 this.finish_index_is_set = false;
-                if (flightPlanData.waypoints.length > 1) {
+                if (flightPlanData.waypoints.length > 0) {
                     for (let i = 0; i < flightPlanData.waypoints.length; i++) {
                         let fp_wp = flightPlanData.waypoints[i];
                         this.add_waypoint_from_flightplan(fp_wp);
@@ -1429,8 +1429,8 @@ export class Task {
                     this.waypoints = [new WP(this, // task
                         0,
                         "HOME",
-                        this.instrument.PLANE_POSITION,
-                        SimVar.GetSimVarValue("GROUND ALTITUDE", "meters")
+                        B21_SOARING_ENGINE.get_position(),
+                        V.gnd_alt.getrawvalue()
                     )];
                     this.index = 0;
                     this.active = true;

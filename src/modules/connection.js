@@ -31,7 +31,7 @@ const initWS = (vars, keybindstates) => {
             {name: 'magvar', address: 0x6028, type: 'float', size: 8 },
             {name: 'trk', address: 0x6040, type: 'float', size: 8 },
             {name: 'alt', address: 0x6020 , type: 'float', size: 8 },
-            {name: 'alt_agl', address: 0x0B4C , type: 'int', size: 2 },
+            {name: 'gnd_alt', address: 0x0B4C , type: 'int', size: 2 },
             {name: 'lat', address: 0x6010, type: 'float', size: 8 },
             {name: 'lng', address: 0x6018, type: 'float', size: 8 },
             {name: 'windspeed', address: 0x0E90, type: 'int', size: 2 },
@@ -41,7 +41,8 @@ const initWS = (vars, keybindstates) => {
             {name: 'localtime_min', address: 0x0239, type: 'int', size: 1 },
             {name: 'localtime_sec', address: 0x023A, type: 'int', size: 1 },
             {name: 'totalweight', address: 0x30C0, type: 'float', size: 8 },
-            {name: 'oat', address: 0x28D0 , type: 'float', size: 8 }
+            {name: 'oat', address: 0x28D0 , type: 'float', size: 8 },
+            {name: 'nearest_apt', address: 0x0658, type: 'table', size: 120}
         ]
     }
 
@@ -106,9 +107,10 @@ const initWS = (vars, keybindstates) => {
                 if(v == "magvar") {  V.magvar.set((response.data.magvar * 180 / 3.14159) ) } else 
                 if(v == "trk") { V.trk.set((response.data.trk * 180 / 3.14159) + V.magvar.getrawvalue()) } else 
                 if(v == "atc_model") { V.atc_model = response.data.atc_model; } else 
-                if(v == "alt_agl") { V.alt_agl.set(V.alt.getrawvalue() - response.data.alt_agl) } else 
+                if(v == "alt") { V[v].set(response.data[v],"fsuipc"); V.alt_agl.set(V.alt.getrawvalue() - V.gnd_alt.getrawvalue()) } else 
                 if(v == "verticalwind") { V.verticalwind.set(response.data.verticalwind,'fs') } else 
                 if(v == "oat") { V.oat.set((response.data.oat -32) * 5/9 ,'C') } else
+                if(v == "nearest_apt") { console.log(response.data.nearest_apt)  } else
                 {
                     try {
                         V[v].set(response.data[v],"fsuipc")
@@ -119,6 +121,7 @@ const initWS = (vars, keybindstates) => {
                 }
                 
             }
+            V.isConnected = true;
         }
 
         if(response.name == "keybindoffsets" && response.command == "offsets.read") {

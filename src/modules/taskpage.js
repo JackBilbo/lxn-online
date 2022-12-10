@@ -204,17 +204,10 @@ export class Taskhandler {
         B21_SOARING_ENGINE.task.load(flightplandata);
         this.taskpage_built = false;
 
-        let fprequest = {
-            command: 'vars.write',
-            name: 'Lvars',
-            vars: [
-                { name: 'LXN_Flightplan', value: "TESTTESTTEST" }
-            ],
-            allowCreate: true
-        }
-        if(WS) {
-            WS.send(JSON.stringify(fprequest));
-        }
+        /* flightplan loaded from file, deactivate manual waypoints */
+        V.markpoints.forEach((mp) => {
+            mp.isActive = false;
+        })
         
 
     }

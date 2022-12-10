@@ -2,7 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     main: './src/index.js',
     firebase: './src/firebase.js',
