@@ -31,6 +31,8 @@ class navmap {
             "type": "FeatureCollection",
             "features": []
         }
+
+        this.clicktimer = 0;
     }
 
     init() {
@@ -363,13 +365,39 @@ class navmap {
             .addTo(NAVMAP.map);
 
         this.map.on("click", (e) => {
-            let coordinates = e.lngLat;
 
-            new mapboxgl.Popup()
+            let coordinates = e.lngLat;
+            let alt = Math.floor(
+                // Do not use terrain exaggeration to get actual meter values
+                NAVMAP.map.queryTerrainElevation(coordinates, { exaggerated: false })
+                );
+
+            this.popup = new mapboxgl.Popup()
                 .setLngLat(coordinates)
-                .setHTML('<p>clicked on ' + coordinates.lng + '</p>')
+                .setHTML(NAVMAP.markpointform())
                 .addTo(NAVMAP.map);
-        })    
+            
+            document.querySelector("#markpointname").value = "Marker" + (V.markpoints.length+1);
+            document.querySelector("#markpointform").setAttribute("data-coords",'{ "lat": ' + coordinates.lat + ', "long": ' + coordinates.lng + ', "alt": ' + alt + ' }')
+
+            document.querySelector("#markpointname").addEventListener("focus", (e) => {
+                document.querySelector("#markpointname").value = "";
+            });
+
+            document.querySelector("#markpointform button").addEventListener("click", (e) => {
+                
+                V.markpoints.push({
+                        ident: document.querySelector("#markpointname").value,
+                        isActive: false,
+                        lla: JSON.parse(document.querySelector("#markpointform").getAttribute("data-coords"))
+                })
+
+                NAVMAP.popup.remove();
+            })
+        
+        });
+        
+        
     }
 
     map_addLayers() {
@@ -476,6 +504,16 @@ class navmap {
         
     }
 
+    markpointform() {
+        let html = `
+            <div id="markpointform">    
+            <h3>Add Markpoint</h3>
+            <input type="text" id="markpointname">
+            <button>Add Marker</button>
+            </div>
+        `
+        return html;
+    }
 }
 
 NAVMAP = new navmap(); NAVMAP.init();

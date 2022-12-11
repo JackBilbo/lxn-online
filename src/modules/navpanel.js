@@ -1,4 +1,5 @@
 import { Geo } from './b21_soaring_engine.js';
+import { msg } from './modalmessages.js';
 
 export class Navpage {
     constructor(ui) {
@@ -19,13 +20,19 @@ export class Navpage {
                 this.ui.openPanel('navpage');
                 document.querySelectorAll(".panels button").forEach((el) => { el.classList.remove("active") });
                 e.target.classList.add("active");
+
+                this.ui.showModal(null,msg.nav);
             }
         })
 
         this.markpointlist.addEventListener("click", (e) => {
-            console.log(e.target);
-            let idx = e.target.parentNode.getAttribute("data-markpoint");
+            let idx = e.target.getAttribute("data-markpoint");
+            V.markpoints.forEach((mp) => { mp.isActive = false; })
             V.markpoints[idx].isActive = true;
+            document.querySelectorAll("#markpointlist tbody tr").forEach((row) => {
+                row.classList.remove("active");
+            })
+            e.target.parentNode.classList.add("active");
             B21_SOARING_ENGINE.task.load({ waypoints: [V.markpoints[idx]] });
         })
     }
@@ -47,22 +54,26 @@ export class Navpage {
             
         }
 
-        if(this.ui.activepanel == "navpage") {
-            this.updateMarkpoints();
+        if(this.markpointcount != V.markpoints.length) {
             this.buildmarkpointlist();
+            this.markpointcount = V.markpoints.length;
         }
 
+        if(this.ui.activepanel == "navpage") {
+            this.updateMarkpoints();
+        }
+
+        
     }
 
     buildmarkpointlist() {
         this.markpointlist.innerHTML = "";
         V.markpoints.forEach((mp,index) => {
             let listpoint = document.createElement('tr');
-            let distance = V.display(mp.distance_m / 1000, 'km', 'dist');
-            
-            listpoint.innerHTML = '<td class="mp_name">' + mp.ident + '</td><td class="mp_dist">' + distance + ' ' + V.units.dist.pref + '</td><td class="mp_arr">' + V.display((mp.arrival_height_msl_m - mp.lla.alt),'m','alt') + ' ' + V.units.alt.pref + '</td>';
+            listpoint.setAttribute("data-name", mp.ident);
+            if(mp.isActive) { listpoint.setAttribute("class","active") }
+            listpoint.innerHTML = '<td class="mp_name">' + mp.ident + '</td><td class="mp_dist"></td><td class="mp_arr"></td><a href="#" data-markpoint="' + index + '"></a>';
             listpoint.setAttribute("data-markpoint", index);
-            if(mp.isActive == true) { listpoint.setAttribute('class','active'); }
             this.markpointlist.append(listpoint);
         });
   
@@ -113,6 +124,10 @@ export class Navpage {
             wp.arrival_height_msl_m = V.alt.display('m') - height_needed_m;
 
             wp.ete_s = time_to_wp_s;
+
+            let mp_row = document.querySelector("tr[data-name=" + wp.ident + "]");
+            mp_row.querySelector(".mp_dist").innerHTML = V.display(wp.distance_m,'m','dist') + ' ' + V.units.dist.pref;
+            mp_row.querySelector(".mp_arr").innerHTML = V.display((wp.arrival_height_msl_m - wp.lla.alt),'m','alt') + ' ' + V.units.alt.pref
         }    
 
 
