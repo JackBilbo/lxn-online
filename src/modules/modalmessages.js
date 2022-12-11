@@ -10,7 +10,7 @@ export const msg = {
     },
     nav: {
         headline: 'Manual Navigation',
-        text: `<p>New experiment: Click on the map to set a markpoint (currently not visible on the map). Those Markpoints are listed on the nav panel and can be clicked, to make the marker
+        text: `<p>New experiment: Click on the map to set a markpoint. Those Markpoints are listed on the nav panel and can be clicked, to make the marker
         your current waypoint, inlcuding distance and arrival height tracking.</p> `
     }
 

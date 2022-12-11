@@ -31,33 +31,15 @@ export class Navpage {
         })
 
         this.markpointlist.addEventListener("click", (e) => {
-            let idx = e.target.getAttribute("data-markpoint");
-            V.markpoints.forEach((mp) => { mp.isActive = false; })
-            V.markpoints[idx].isActive = true;
-            document.querySelectorAll("#markpointlist tbody tr").forEach((row) => {
-                row.classList.remove("active");
-            })
-            e.target.parentNode.classList.add("active");
-            B21_SOARING_ENGINE.task.load({ waypoints: [V.markpoints[idx]] });
+            if(e.target.classList.contains("rem-markpoint")) {
+                this.removeMarkpoint(e.target);
+            } else {
+                this.selectMarkpoint(e.target);
+            }
         })
     }
 
     update() {
-        
-        if(V.isConnected && !this.startpointset) {
-            V.markpoints.push({
-                ident: "Startposition",
-                isActive: false,
-                lla: {
-                    lat: V.lat.getrawvalue(),
-                    long: V.lng.getrawvalue(),
-                    alt: V.alt.getrawvalue()
-                }
-            })
-            this.startpointset = true;
-
-            
-        }
 
         if(this.markpointcount != V.markpoints.length) {
             this.buildmarkpointlist();
@@ -71,17 +53,51 @@ export class Navpage {
         
     }
 
+    selectMarkpoint(el) {
+        let idx = el.getAttribute("data-markpoint");
+
+        if(!V.markpoints[idx].isActive) {
+            V.markpoints.forEach((mp) => { mp.isActive = false; })
+            V.markpoints[idx].isActive = true;
+            document.querySelectorAll("#markpointlist tbody tr").forEach((row) => {
+                row.classList.remove("active");
+            })
+            el.parentNode.classList.add("active");
+            B21_SOARING_ENGINE.task.load({ waypoints: [V.markpoints[idx]] });
+            NAVMAP.paintmarkpoints();
+        } else {
+            V.markpoints[idx].isActive = false;
+            el.parentNode.classList.remove("active");
+            B21_SOARING_ENGINE.init_task_complete = null;
+            B21_SOARING_ENGINE.init_task_load();
+            NAVMAP.paintmarkpoints();
+            NAVMAP.removecourseline();
+        }
+    }
+
+    removeMarkpoint(el) {
+            let idx = el.getAttribute("data-markpoint");
+            V.markpoints.splice(idx,1);
+            this.buildmarkpointlist();
+            NAVMAP.paintmarkpoints();
+    }
+
     buildmarkpointlist() {
         this.markpointlist.innerHTML = "";
         V.markpoints.forEach((mp,index) => {
             let listpoint = document.createElement('tr');
             listpoint.setAttribute("data-name", mp.ident);
             if(mp.isActive) { listpoint.setAttribute("class","active") }
-            listpoint.innerHTML = '<td class="mp_name">' + mp.ident + '</td><td class="mp_dist"></td><td class="mp_arr"></td><a href="#" data-markpoint="' + index + '"></a>';
+            listpoint.innerHTML = '<td class="mp_name">' + mp.ident + '</td><td class="mp_dist"></td><td class="mp_arr"></td><a href="#" class="select-markpoint" data-markpoint="' + index + '"></a>';
+            if(mp.isOwner) { listpoint.innerHTML += '<a href="#" class="rem-markpoint" data-markpoint="' + index + '">X</a>' }
             listpoint.setAttribute("data-markpoint", index);
             this.markpointlist.append(listpoint);
+
         });
-  
+        if(V.markpoints.length > 0) {
+            NAVMAP.paintmarkpoints();
+        }
+        
     }
 
     updateMarkpoints() {
@@ -130,7 +146,7 @@ export class Navpage {
 
             wp.ete_s = time_to_wp_s;
 
-            let mp_row = document.querySelector("tr[data-name=" + wp.ident + "]");
+            let mp_row = document.querySelector("tr[data-name='" + wp.ident + "']");
             mp_row.querySelector(".mp_dist").innerHTML = V.display(wp.distance_m,'m','dist') + ' ' + V.units.dist.pref;
             mp_row.querySelector(".mp_arr").innerHTML = V.display((wp.arrival_height_msl_m - wp.lla.alt),'m','alt') + ' ' + V.units.alt.pref
         }    

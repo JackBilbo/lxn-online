@@ -147,6 +147,30 @@ class navmap {
         this.map.getSource('courseline').setData(waypointline);
     }
 
+    removecourseline() {
+        var waypointline = {
+            'type': 'FeatureCollection',
+            'features': []
+        };
+
+        this.map.getSource('courseline').setData(waypointline);
+    }
+
+    paintmarkpoints() {
+        let markpointgeojson = {
+            'type': 'FeatureCollection',
+            'features': []
+        };
+
+        V.markpoints.forEach((mp) => {
+            var markpoint = this.createGeoJSONCircle([ mp.lla.long, mp.lla.lat],0.5)
+            markpoint.properties = {"ident": mp.ident,"weight": this.TASK_LINE_WIDTH, "color": (mp.isActive ? this.TASK_LINE_CURRENT_COLOR : this.TASK_LINE_COLOR), "fillColor": (mp.isActive ? this.TASK_LINE_CURRENT_COLOR : this.TASK_LINE_COLOR), "fillOpacity": 0.3 }
+            markpointgeojson.features.push(markpoint);
+        })
+
+        this.map.getSource('markpointsource').setData(markpointgeojson);
+    }
+
     updateTaskline() {
         this.taskgeojson.features.forEach((taskline) => {
             if(taskline.properties["id"] == B21_SOARING_ENGINE.task_index() ) {
@@ -388,6 +412,7 @@ class navmap {
                 
                 V.markpoints.push({
                         ident: document.querySelector("#markpointname").value,
+                        isOwner: true,
                         isActive: false,
                         lla: JSON.parse(document.querySelector("#markpointform").getAttribute("data-coords"))
                 })
@@ -407,6 +432,14 @@ class navmap {
         });
 
         NAVMAP.map.addSource('courseline', {
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': []
+            }
+        });
+
+        NAVMAP.map.addSource('markpointsource', {
             'type': 'geojson',
             'data': {
                 'type': 'FeatureCollection',
@@ -455,6 +488,28 @@ class navmap {
                 'circle-color': ['get','color'],
                 'circle-opacity': ['get','opacity']
             }
+        })
+
+        NAVMAP.map.addLayer({
+            'id': 'markpointlayer',
+            'type': 'fill',
+            'source': 'markpointsource',
+            'paint': {
+                'fill-color': ['get','color'],
+                'fill-opacity': ['get','fillOpacity']
+            },
+            'filter': ['==', '$type', 'Polygon']
+        })
+
+        NAVMAP.map.addLayer({
+            'id': 'markpointoutlinelayer',
+            'type': 'line',
+            'source': 'markpointsource',
+            'paint': {
+                'line-color': ['get','color'],
+                'line-width': ['get','weight']
+            },
+            'filter': ['==', '$type', 'Polygon']
         })
 
         NAVMAP.map.addLayer({
