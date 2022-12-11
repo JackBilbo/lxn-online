@@ -556,7 +556,7 @@ class navmap {
             'filter': ['==', '$type', 'Polygon']
         })
 
-        
+        NAVMAP.paintmarkpoints();
     }
 
     markpointform() {

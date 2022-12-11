@@ -47,8 +47,12 @@
     }
 }
 
-.mapboxgl-popup-content, .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+.mapboxgl-popup-content  {
     background-color: #222 !important;
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+    border-top-color: #222 !important;
 }
 
 #markpointform {

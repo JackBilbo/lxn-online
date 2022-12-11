@@ -60,7 +60,7 @@ units.windspeed.format = (val) => {
 }
 
 units.verticalspeed.format = (val) => {
-    return val.toFixed(2);
+    return val.toFixed(1);
 }
 
 units.speed.format = (val) => {
