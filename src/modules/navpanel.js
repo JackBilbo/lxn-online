@@ -6,6 +6,7 @@ export class Navpage {
         this.ui = ui;
         V.markpoints = [];
         this.markpointlist = document.getElementById("markpointlist").querySelector("tbody");
+        this.modalshown = false;
 
         this.init();
     }
@@ -21,7 +22,11 @@ export class Navpage {
                 document.querySelectorAll(".panels button").forEach((el) => { el.classList.remove("active") });
                 e.target.classList.add("active");
 
-                this.ui.showModal(null,msg.nav);
+                if(!this.modalshown) {
+                    this.ui.showModal(null,msg.nav);
+                    this.modalshown = true;
+                }
+                
             }
         })
 
