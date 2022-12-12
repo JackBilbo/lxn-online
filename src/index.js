@@ -80,10 +80,12 @@ function update200() {
     if(B21_SOARING_ENGINE.task_active()) {   B21_SOARING_ENGINE.Update();  }
     V.localtime.set((V.localtime_h * 3600 + V.localtime_m * 60 + V.localtime_s));
 
-    V.current_polar_sink.set(getPolarSink_kts(V.display(V.ias.getrawvalue(),'kmh','speed','imperial')),'kts');
-    V.total_energy.set(getTotalEnergy(),'ms');
-    V.current_netto.set(V.total_energy.getrawvalue() + Math.abs(V.current_polar_sink.getrawvalue()));
-    V.smoothed_netto.set( (V.smoothed_netto.getrawvalue() * 0.9) + (V.current_netto.getrawvalue() * 0.1)  )
+    if(V.isConnected) {
+        V.current_polar_sink.set(getPolarSink_kts(V.display(V.ias.getrawvalue(),'kmh','speed','imperial')),'kts');
+        V.total_energy.set(getTotalEnergy(),'ms');
+        V.current_netto.set(V.total_energy.getrawvalue() + Math.abs(V.current_polar_sink.getrawvalue()));
+        V.smoothed_netto.set( (V.smoothed_netto.getrawvalue() * 0.9) + (V.current_netto.getrawvalue() * 0.1)  )
+    }
 
     document.querySelectorAll(".datafield").forEach((el) => {
         let conf = JSON.parse(el.getAttribute("data-config"));
