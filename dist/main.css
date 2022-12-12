@@ -511,7 +511,7 @@ input[type=range]::-webkit-slider-runnable-track {
   height: 100%;
   position: relative; }
 
-#modal {
+#modal, #connectmodal {
   display: none;
   z-index: 100;
   position: absolute;
@@ -524,18 +524,31 @@ input[type=range]::-webkit-slider-runnable-track {
   overflow: auto;
   top: 20%;
   left: 20%; }
-  #modal section {
+  #modal section, #connectmodal section {
     line-height: 1.6; }
-    #modal section a {
+    #modal section a, #connectmodal section a {
       color: #fff; }
-  #modal button {
+  #modal button, #connectmodal button {
     float: right;
     min-width: 8rem; }
   @media screen and (max-width: 40em) {
-    #modal {
+    #modal, #connectmodal {
       width: 90%;
       top: 20%;
       left: 5%; } }
+
+#connectmodal {
+  display: block;
+  min-height: 40%; }
+
+.connect_address {
+  margin: 1em 0; }
+  .connect_address input {
+    font-size: 2em;
+    padding: 0.2em; }
+
+.ws_connect {
+  margin-bottom: 1em; }
 
 nav {
   width: 100%;

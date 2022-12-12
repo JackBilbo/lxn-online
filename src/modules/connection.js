@@ -4,10 +4,46 @@ var wsserver = document.location.search.replace(/\?/,"");
 if(wsserver == '') { wsserver = '127.0.0.1:2048' }
 
 const initWS = (vars, keybindstates) => {
+    connectiondetails = JSON.parse(localStorage.getItem("connectiondetails"));
+
+    if(typeof(connectiondetails) !== 'object') {
+        connectiondetails = {
+            ip: '127.0.0.1',
+            port: '2048'
+        }
+    }
+
+    document.querySelector("#connect_ip").value = connectiondetails.ip;
+    document.querySelector("#conncetion_ip").innerText = connectiondetails.ip;
+    document.querySelector("#connect_port").value = connectiondetails.port;
+    document.querySelector("#connection_port").innerText = connectiondetails.port;
+
+    document.querySelector("#cancelconnect").addEventListener("click", () => { document.querySelector("#connectmodal").style.display = "none"; });
+
+    document.querySelectorAll(".ws_connect").forEach( (el) => {
+        el.addEventListener("click", () => {
+            connectiondetails = {
+                ip: document.querySelector("#connect_ip").value,
+                port: document.querySelector("#connect_port").value
+            }
+
+            localStorage.setItem("connectiondetails", JSON.stringify(connectiondetails));
+
+            startWS(vars, keybindstates, connectiondetails);
+            document.querySelector("#connectmodal").style.display = "none";
+        })
+    })
+
+
+}
+
+
+
+const startWS = (vars, keybindstates, connectiondetails) => {
 
     try {
-        WS = new WebSocket('ws://' + wsserver + '/fsuipc/', "fsuipc");
-        D.log("Connecting: 'ws://" + wsserver + "/fsuipc/'");
+        WS = new WebSocket('ws://' + connectiondetails.ip + ':' + connectiondetails.port + '/fsuipc/', "fsuipc");
+        D.log("Connecting: 'ws://" + connectiondetails.ip + ":" + connectiondetails.port + "/fsuipc/'");
     } catch(e) {
         D.log("Connection failed:");
         D.log(e);
@@ -17,7 +53,7 @@ const initWS = (vars, keybindstates) => {
 
     WS.addEventListener("close", function() {
         D.log("Connection interrupted. Reconnecting...")
-        initWS(vars, keybindstates);
+        startWS(vars, keybindstates, connectiondetails);
     })
 
     var declare_vars = {

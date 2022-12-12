@@ -355,7 +355,7 @@ class navmap {
         pitch: 0,
         bearing: 0,
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: 'mapbox://styles/mapbox/satellite-streets-v12'
+        style: 'mapbox://styles/mapbox/outdoors-v12'
         });
 
         this.map.on('load', () => {
@@ -475,6 +475,7 @@ class navmap {
                 // where hillshading sits in the Mapbox Streets style.
                 'land-structure-polygon'
                 );
+            NAVMAP.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 0 });
         } else {
             NAVMAP.map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1 });
         }

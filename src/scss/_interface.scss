@@ -119,7 +119,7 @@ input[type="range"] {
 	position: relative;
 }
 
-#modal {
+#modal, #connectmodal {
 	display: none;
     z-index: 100;
     position: absolute;
@@ -148,6 +148,23 @@ input[type="range"] {
     	top: 20%;
     	left: 5%;
 	}
+}
+
+#connectmodal {
+	display: block;
+	min-height: 40%;
+}
+
+.connect_address {
+	margin: 1em 0;
+	input {
+		font-size: 2em;
+		padding: 0.2em;
+	}
+}
+
+.ws_connect {
+	margin-bottom: 1em;
 }
 
 nav {
