@@ -37,6 +37,14 @@ export class Navpage {
                 this.selectMarkpoint(e.target);
             }
         })
+
+        document.getElementById("save_markpoints").addEventListener("click", (e) => {
+            this.save_markpoints();
+        })
+
+        document.getElementById('load_markpoints').addEventListener("change", () => {
+            this.handleUpload(document.getElementById('load_markpoints').files);
+        })
     }
 
     update() {
@@ -152,5 +160,42 @@ export class Navpage {
         }    
 
 
+    }
+
+    save_markpoints() {
+        let now = new Date();
+        let filename = "lxn_markpoints-" + (now.getMonth() + 1) + "-" + now.getDate() +  ".json";
+        let text = JSON.stringify(V.markpoints);
+
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    handleUpload(upload) {
+        let reader = new FileReader();
+        reader.addEventListener("load", (e) => {
+            let decoder = new TextDecoder();
+            let rawfile = decoder.decode(e.target.result);
+            try {
+                let mp_collection = JSON.parse(rawfile);
+                mp_collection.forEach((mp) => {
+                    V.markpoints.push(mp);
+                })
+            } catch(e) {
+                console.log("upload failed: " + e);
+            }       
+        });
+        reader.addEventListener('error', (e) => {
+            alert('Error : Failed to read file');
+        });
+        reader.readAsArrayBuffer(upload[0]);
     }
 }

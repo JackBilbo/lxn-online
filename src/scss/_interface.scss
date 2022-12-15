@@ -67,7 +67,7 @@ button {
 #maccready {
 	width: calc(100% - 2em);
     position: absolute;
-    bottom: 5em;
+    bottom: 0;
 	input { width: 75%;}	
 	span {
 	display: inline-block;
@@ -115,8 +115,9 @@ input[type="range"] {
 
 .panel {
     padding: 1em;
-	height: 100%;
+	height: calc(100% - 75px);
 	position: relative;
+	overflow: auto;
 }
 
 #modal, #connectmodal {
