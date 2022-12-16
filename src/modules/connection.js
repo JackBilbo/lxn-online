@@ -142,12 +142,13 @@ const startWS = (vars, keybindstates, connectiondetails) => {
                 if(v == "magvar") {  V.magvar.set((response.data.magvar * 180 / 3.14159) ) } else 
                 if(v == "trk") { V.trk.set((response.data.trk * 180 / 3.14159) + V.magvar.getrawvalue()) } else 
                 if(v == "atc_model") { V.atc_model = response.data.atc_model; } else 
-                if(v == "alt") { V[v].set(response.data[v],"ft"); V.alt_agl.set(V.alt.getrawvalue() - V.gnd_alt.getrawvalue()) } else 
+                if(v == "alt") { V[v].set(response.data[v],"ft"); } else 
                 if(v == "verticalwind") { V.verticalwind.set(response.data.verticalwind,'fs') } else 
                 if(v == "oat") { V.oat.set((response.data.oat -32) * 5/9 ,'C') } else
                 {
                     try {
-                        V[v].set(response.data[v],"fsuipc")
+                        V[v].set(response.data[v],"fsuipc");
+                        V.alt_agl.set(V.alt.getrawvalue() - V.gnd_alt.getrawvalue())
                     } catch(e) {
                         console.error(e);
                     }

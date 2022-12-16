@@ -8,6 +8,7 @@ import { Interface } from './modules/interface.js';
 import { Configpanel } from './modules/configpage.js';
 import { Navpage } from './modules/navpanel.js';
 import { msg } from './modules/modalmessages.js';
+import { Geo } from './modules/b21_soaring_engine.js';
 import './modules/datafields.js';
 
 var allvars = []
@@ -19,6 +20,7 @@ V.localtime_h = 0;
 V.localtime_m = 0;
 V.localtime_s = 0;
 V.te = { v: 0, h: 0, t: 0, te: 0}
+V.log = { isStarted: false }
 
 V.units = units;
 
@@ -36,7 +38,6 @@ if(webGLavailable) {
     // todo Non-GL Fallback for Map
 }
 
-
 const ui = new Interface();
 const hawk = new Hawk( 'rotate' );
 const taskpage = new Taskhandler(ui);
@@ -46,7 +47,8 @@ const navpage = new Navpage(ui);
 ui.showModal(null,msg.loading);
 
 const heartbeat100 = window.setInterval(update100, 100);
-const heartbeat200 = window.setInterval(update200, 200);
+const heartbeat200 = window.setInterval(update240, 240);
+const heartbeat1000 = window.setInterval(update1850, 1850);
 
 function update100() {
     update_sim_time();
@@ -54,9 +56,12 @@ function update100() {
         NAVMAP.update();
     }
     hawk.update();
+
+    if(V.alt_agl.getrawvalue() > 100) { V.log.isStarted = true; }
+    if(V.alt_agl.getrawvalue() < 10 && V.ias.getrawvalue() < 50 && V.log.isStarted == true) { V.log.isStarted = false; }
 }
 
-function update200() {
+function update240() {
     if(V.atc_model && V.atc_model != current_aircraft.atc_model) {
         current_aircraft = {};
         aircraft.forEach((ac) => {
@@ -84,7 +89,7 @@ function update200() {
         V.current_polar_sink.set(getPolarSink_kts(V.display(V.ias.getrawvalue(),'kmh','speed','imperial')),'kts');
         V.total_energy.set(getTotalEnergy(),'ms');
         V.current_netto.set(V.total_energy.getrawvalue() + Math.abs(V.current_polar_sink.getrawvalue()));
-        V.smoothed_netto.set( (V.smoothed_netto.getrawvalue() * 0.9) + (V.current_netto.getrawvalue() * 0.1)  )
+        V.smoothed_netto.set( ((isNaN(V.smoothed_netto.getrawvalue()) ? 0 : V.smoothed_netto.getrawvalue()) * 0.9) + (V.current_netto.getrawvalue() * 0.1)  )
     }
 
     document.querySelectorAll(".datafield").forEach((el) => {
@@ -109,9 +114,21 @@ function update200() {
         el.querySelector(".number").innerText = V[conf.display].display();
         el.querySelector(".unit").innerText = V[conf.display].unit();
     })  
+
+    if(V.log.isStarted) {
+        if(V.log.time == null) { V.log.time = V.sim_time_s; }
+        V.log_time.set( (V.log_time.getrawvalue() + (V.sim_time_s - V.log.time))); 
+        V.log.time = V.sim_time_s;
+    }
     
     taskpage.update();
     navpage.update();
+}
+
+function update1850() {
+    if(V.log.isStarted) {
+        updateLog();   
+    }
 }
 
 function update_sim_time() {
@@ -198,6 +215,29 @@ function getTotalEnergy() {
     V.te.t = now;
 
     return V.te.te;
+}
+
+function updateLog() {
+    if(V.log.pos == null) { V.log.pos = B21_SOARING_ENGINE.get_position(); }
+    let distance = Geo.get_distance_m(B21_SOARING_ENGINE.get_position(), V.log.pos);
+    V.log_dist.set( V.log_dist.getrawvalue() + distance / 1000 );
+
+    if(V.log.alt == null) { V.log.alt = V.alt.getrawvalue(); }
+    let deltaalt = V.alt.getrawvalue() > V.log.alt ? V.alt.getrawvalue() - V.log.alt : 0;
+    V.log_climb.set(V.log_climb.getrawvalue() + deltaalt);
+
+    V.log_avg.set(V.log_dist.getrawvalue() / (V.log_time.getrawvalue() / 3600));
+
+    V.log.pos = B21_SOARING_ENGINE.get_position();
+    V.log.alt = V.alt.getrawvalue();
+}
+
+function resetLog() {
+    V.log = {
+        time: null,
+        alt: null,
+        pos: null
+    }
 }
 
 function webGLavailable () {

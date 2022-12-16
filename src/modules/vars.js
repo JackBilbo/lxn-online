@@ -34,6 +34,10 @@ const vars = {
     current_netto: { value: 0, label: "NETTO", longlabel: "Current Netto", category: "verticalspeed", baseunit: "ms" },
     smoothed_netto: { value: 0, label: "NETTO", longlabel: "Smoothed Netto", category: "verticalspeed", baseunit: "ms" },
     oat: { value: 0, label: "OAT", longlabel: "Outside Air Temperature",category:"temperature", baseunit: "C"},
+    log_time:{ value: 0, label: "LOG TIME", longlabel: "Log Time", category: "time_of_day", baseunit: "hms24" },
+    log_climb: { value: 0, label: "LOG CLB", longlabel: "Log Accumulated Climb", category: "alt", baseunit: "m"},
+    log_avg: { value: 0, label: "LOG AVG", longlabel: "Log Average Groundspeed", category: "speed", baseunit: "kmh"},
+    log_dist: { value: 0, label: "LOG DIST", longlabel: "Log Distance", category: "dist", baseunit: "km" },
 }
 
 const units = {
